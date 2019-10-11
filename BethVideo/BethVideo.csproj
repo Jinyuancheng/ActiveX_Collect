@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C2C88D0F-6739-412D-92AB-EB1E50C82E70}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BethVideo</RootNamespace>
+    <AssemblyName>BethVideo</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>true</RegisterForComInterop>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>true</RegisterForComInterop>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="API\DefVsClient.cs" />
+    <Compile Include="API\ReadIniAPI.cs" />
+    <Compile Include="API\VsClientAPI.cs" />
+    <Compile Include="Common\DefBethVideo.cs" />
+    <Compile Include="Common\DefIcomClient.cs" />
+    <Compile Include="HikSDK\CHCNetSDK.cs" />
+    <Compile Include="HikSDK\CustomCalss.cs" />
+    <Compile Include="Video\fmFullScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Video\fmFullScreen.Designer.cs">
+      <DependentUpon>fmFullScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\FuncCommon.cs" />
+    <Compile Include="API\HikVideoAPI.cs" />
+    <Compile Include="Common\IObjectSafety.cs" />
+    <Compile Include="Common\MsgHandleStr.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Video\ucSingleVideo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Video\ucSingleVideo.Designer.cs">
+      <DependentUpon>ucSingleVideo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Video\ucVideo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Video\ucVideo.Designer.cs">
+      <DependentUpon>ucVideo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Video\ucVideoGroup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Video\ucVideoGroup.Designer.cs">
+      <DependentUpon>ucVideoGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="API\Win32API.cs" />
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Video\fmFullScreen.resx">
+      <DependentUpon>fmFullScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Video\ucSingleVideo.resx">
+      <DependentUpon>ucSingleVideo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Video\ucVideo.resx">
+      <DependentUpon>ucVideo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Video\ucVideoGroup.resx">
+      <DependentUpon>ucVideoGroup.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Resources\VideoBack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VideoClose_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VideoClose_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\双视2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\双视大屏1.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

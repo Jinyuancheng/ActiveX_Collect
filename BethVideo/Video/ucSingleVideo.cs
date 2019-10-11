@@ -14,15 +14,15 @@ namespace BethVideo
 {
     public partial class ucSingleVideo : UserControl
     {
-        private Int32  m_iChannel;       //摄像机通道号
-        private Int32  m_lPlayHandle;    //视频预览句柄
-        public bool    m_bConnected;     //是否连接成功
+        private Int32 m_iChannel;       //摄像机通道号
+        private Int32 m_lPlayHandle;    //视频预览句柄
+        public bool m_bConnected;     //是否连接成功
 
         ///自己api使用
         public string m_strName;        //摄像机名称
         public string m_strSvrIp;       //摄像机ip
         public string m_strCamId;       //摄像机id
-        public int     m_iType;          //摄像机调用api类型
+        public int m_iType;          //摄像机调用api类型
 
         public ucSingleVideo()
         {
@@ -33,6 +33,8 @@ namespace BethVideo
             pnlCaption.Visible = false;
             m_iType = -1;
         }
+
+        #region [Get Set方法]
         /// <summary>
         /// 设置摄像机加载api类型
         /// </summary>
@@ -46,10 +48,13 @@ namespace BethVideo
         {
             return m_iChannel;
         }
+        //得到视频是否连接
         public bool GetIsConnect()
         {
             return m_bConnected;
         }
+        #endregion
+
         #region [过程] [窗口关闭、单击、双击事件]
         //窗口关闭事件
         private void pbClose_MouseUp(object sender, MouseEventArgs e)

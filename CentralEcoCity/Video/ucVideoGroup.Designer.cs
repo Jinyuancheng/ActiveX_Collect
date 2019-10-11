@@ -28,7 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pnlShape = new System.Windows.Forms.Panel();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmSplitScreen = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmOneScreen = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmFourScreen = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmNineScreen = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmSixTeenScreen = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmDisVideo = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmDisAllVideo = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlShape
@@ -41,6 +51,63 @@
             this.pnlShape.Visible = false;
             this.pnlShape.Resize += new System.EventHandler(this.ucVideoGroup_Resize);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmSplitScreen,
+            this.tsmDisVideo,
+            this.tsmDisAllVideo});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 92);
+            // 
+            // tsmSplitScreen
+            // 
+            this.tsmSplitScreen.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmOneScreen,
+            this.tsmFourScreen,
+            this.tsmNineScreen,
+            this.tsmSixTeenScreen});
+            this.tsmSplitScreen.Name = "tsmSplitScreen";
+            this.tsmSplitScreen.Size = new System.Drawing.Size(180, 22);
+            this.tsmSplitScreen.Text = "分屏切换";
+            this.tsmSplitScreen.Click += new System.EventHandler(this.tsmSplitScreen_Click);
+            // 
+            // tsmOneScreen
+            // 
+            this.tsmOneScreen.Name = "tsmOneScreen";
+            this.tsmOneScreen.Size = new System.Drawing.Size(180, 22);
+            this.tsmOneScreen.Text = "单画面";
+            // 
+            // tsmFourScreen
+            // 
+            this.tsmFourScreen.Name = "tsmFourScreen";
+            this.tsmFourScreen.Size = new System.Drawing.Size(180, 22);
+            this.tsmFourScreen.Text = "四画面";
+            // 
+            // tsmNineScreen
+            // 
+            this.tsmNineScreen.Name = "tsmNineScreen";
+            this.tsmNineScreen.Size = new System.Drawing.Size(180, 22);
+            this.tsmNineScreen.Text = "九画面";
+            // 
+            // tsmSixTeenScreen
+            // 
+            this.tsmSixTeenScreen.Name = "tsmSixTeenScreen";
+            this.tsmSixTeenScreen.Size = new System.Drawing.Size(180, 22);
+            this.tsmSixTeenScreen.Text = "十六画面";
+            // 
+            // tsmDisVideo
+            // 
+            this.tsmDisVideo.Name = "tsmDisVideo";
+            this.tsmDisVideo.Size = new System.Drawing.Size(180, 22);
+            this.tsmDisVideo.Text = "断开视频";
+            // 
+            // tsmDisAllVideo
+            // 
+            this.tsmDisAllVideo.Name = "tsmDisAllVideo";
+            this.tsmDisAllVideo.Size = new System.Drawing.Size(180, 22);
+            this.tsmDisAllVideo.Text = "断开全部视频";
+            // 
             // ucVideoGroup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -51,6 +118,7 @@
             this.Name = "ucVideoGroup";
             this.Size = new System.Drawing.Size(472, 309);
             this.Resize += new System.EventHandler(this.ucVideoGroup_Resize);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -66,5 +134,13 @@
         private System.Windows.Forms.ToolStripMenuItem tmsiSixtheenScreen;
         private System.Windows.Forms.ToolStripMenuItem tsmiDisConect;
         private System.Windows.Forms.ToolStripMenuItem tsmiDisconectAll;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem tsmSplitScreen;
+        private System.Windows.Forms.ToolStripMenuItem tsmOneScreen;
+        private System.Windows.Forms.ToolStripMenuItem tsmFourScreen;
+        private System.Windows.Forms.ToolStripMenuItem tsmNineScreen;
+        private System.Windows.Forms.ToolStripMenuItem tsmSixTeenScreen;
+        private System.Windows.Forms.ToolStripMenuItem tsmDisVideo;
+        private System.Windows.Forms.ToolStripMenuItem tsmDisAllVideo;
     }
 }

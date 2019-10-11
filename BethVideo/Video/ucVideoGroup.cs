@@ -77,6 +77,10 @@ namespace BethVideo
         private void ucSingleVideo_DbClick(object sender, EventArgs e)
         {
             int iTag = Convert.ToInt32(((Panel)sender).Tag);
+            if (!m_arrVideos[iTag].GetIsConnect())
+            {
+                return;
+            }
             //pnlShape.Visible = false;
             m_fmFullScreen.Left = 0;
             m_fmFullScreen.Top = 0;

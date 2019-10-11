@@ -416,5 +416,10 @@ namespace CentralEcoCity.Video
             m_arrVideos[m_iActiveWin].PTZCtrl(iCmd, iSpeed, 1);
         }
         #endregion
+
+        private void tsmSplitScreen_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

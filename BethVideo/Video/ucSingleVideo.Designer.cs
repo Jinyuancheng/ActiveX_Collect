@@ -39,7 +39,7 @@
             // 
             // pnlCaption
             // 
-            this.pnlCaption.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
+            this.pnlCaption.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(133)))), ((int)(((byte)(154)))));
             this.pnlCaption.Controls.Add(this.lblCamName);
             this.pnlCaption.Controls.Add(this.pbClose);
             this.pnlCaption.Dock = System.Windows.Forms.DockStyle.Top;

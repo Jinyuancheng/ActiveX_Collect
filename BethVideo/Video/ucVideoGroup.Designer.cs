@@ -33,10 +33,10 @@
             // 
             // pnlShape
             // 
-            this.pnlShape.BackColor = System.Drawing.Color.PaleGreen;
+            this.pnlShape.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(148)))), ((int)(((byte)(187)))));
             this.pnlShape.Location = new System.Drawing.Point(200, 78);
             this.pnlShape.Name = "pnlShape";
-            this.pnlShape.Size = new System.Drawing.Size(564, 225);
+            this.pnlShape.Size = new System.Drawing.Size(326, 122);
             this.pnlShape.TabIndex = 1;
             this.pnlShape.Visible = false;
             // 

@@ -70,43 +70,48 @@
             this.tsmSplitScreen.Name = "tsmSplitScreen";
             this.tsmSplitScreen.Size = new System.Drawing.Size(180, 22);
             this.tsmSplitScreen.Text = "分屏切换";
-            this.tsmSplitScreen.Click += new System.EventHandler(this.tsmSplitScreen_Click);
             // 
             // tsmOneScreen
             // 
             this.tsmOneScreen.Name = "tsmOneScreen";
-            this.tsmOneScreen.Size = new System.Drawing.Size(180, 22);
+            this.tsmOneScreen.Size = new System.Drawing.Size(124, 22);
             this.tsmOneScreen.Text = "单画面";
+            this.tsmOneScreen.Click += new System.EventHandler(this.tsmOneScreen_Click);
             // 
             // tsmFourScreen
             // 
             this.tsmFourScreen.Name = "tsmFourScreen";
-            this.tsmFourScreen.Size = new System.Drawing.Size(180, 22);
+            this.tsmFourScreen.Size = new System.Drawing.Size(124, 22);
             this.tsmFourScreen.Text = "四画面";
+            this.tsmFourScreen.Click += new System.EventHandler(this.tsmFourScreen_Click);
             // 
             // tsmNineScreen
             // 
             this.tsmNineScreen.Name = "tsmNineScreen";
-            this.tsmNineScreen.Size = new System.Drawing.Size(180, 22);
+            this.tsmNineScreen.Size = new System.Drawing.Size(124, 22);
             this.tsmNineScreen.Text = "九画面";
+            this.tsmNineScreen.Click += new System.EventHandler(this.tsmNineScreen_Click);
             // 
             // tsmSixTeenScreen
             // 
             this.tsmSixTeenScreen.Name = "tsmSixTeenScreen";
-            this.tsmSixTeenScreen.Size = new System.Drawing.Size(180, 22);
+            this.tsmSixTeenScreen.Size = new System.Drawing.Size(124, 22);
             this.tsmSixTeenScreen.Text = "十六画面";
+            this.tsmSixTeenScreen.Click += new System.EventHandler(this.tsmSixTeenScreen_Click);
             // 
             // tsmDisVideo
             // 
             this.tsmDisVideo.Name = "tsmDisVideo";
             this.tsmDisVideo.Size = new System.Drawing.Size(180, 22);
             this.tsmDisVideo.Text = "断开视频";
+            this.tsmDisVideo.Click += new System.EventHandler(this.tsmDisVideo_Click);
             // 
             // tsmDisAllVideo
             // 
             this.tsmDisAllVideo.Name = "tsmDisAllVideo";
             this.tsmDisAllVideo.Size = new System.Drawing.Size(180, 22);
             this.tsmDisAllVideo.Text = "断开全部视频";
+            this.tsmDisAllVideo.Click += new System.EventHandler(this.tsmDisAllVideo_Click);
             // 
             // ucVideoGroup
             // 

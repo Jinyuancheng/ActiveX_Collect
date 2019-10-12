@@ -477,10 +477,5 @@ namespace CentralEcoCity.Video
             }
         }
         #endregion
-
-        private void pnlShowVideo_Enter(object sender, EventArgs e)
-        {
-            
-        }
     }
 }

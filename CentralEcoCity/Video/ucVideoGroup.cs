@@ -52,7 +52,7 @@ namespace CentralEcoCity.Video
         public void Init()
         {
             tmsiFourScreen = new ToolStripMenuItem();
-            for(int i = 0;i < m_arrVideos.Length;i++)
+            for (int i = 0; i < m_arrVideos.Length; i++)
             {
                 m_arrVideos[i].m_evntSetCapPath += new pSetCapPath(SetCapPathAll);
             }
@@ -340,21 +340,24 @@ namespace CentralEcoCity.Video
         #region [过程] [窗口右键菜单事件]
         private void pnlShowVideo_MouseDown(object sender, MouseEventArgs e)
         {
-            int iWinNo = Convert.ToInt32(((Panel)sender).Tag);
+            int iTag = Convert.ToInt32(((Panel)sender).Tag);
             if (e.Button == MouseButtons.Left)
             {
-                setActiveWin(iWinNo);
+                setActiveWin(iTag);
             }
             else
             {
-                if (m_arrVideos[iWinNo].m_bConnected)
-                {
-                    tsmiDisConect.Visible = true;
-                }
-                else
-                {
-                    tsmiDisConect.Visible = false;
-                }
+                //if(m_arrVideos[iTag].m_bConnected)
+                //{
+                //    //MessageBox.Show("X:" + MousePosition.X + " Y:" + MousePosition.Y);
+                //    this.contextMenuStrip1.Show(MousePosition.X, MousePosition.Y);
+                //    //this.contextMenuStrip1.Visible = true;
+                //}
+                //else
+                //{
+                //    this.contextMenuStrip1.Visible = false;
+                //}
+                this.contextMenuStrip1.Show(MousePosition.X, MousePosition.Y);
             }
         }
         #endregion
@@ -417,9 +420,38 @@ namespace CentralEcoCity.Video
         }
         #endregion
 
-        private void tsmSplitScreen_Click(object sender, EventArgs e)
+        #region [右键菜单操作]
+        /*\ 切换单屏 /*/
+        private void tsmOneScreen_Click(object sender, EventArgs e)
         {
-
+            this.ChangeScreens(1);
         }
+        /*\ 切换四屏 /*/
+        private void tsmFourScreen_Click(object sender, EventArgs e)
+        {
+            this.ChangeScreens(4);
+        }
+        /*\ 切换九屏 /*/
+        private void tsmNineScreen_Click(object sender, EventArgs e)
+        {
+            this.ChangeScreens(9);
+        }
+        /*\ 切换十六屏幕 /*/
+        private void tsmSixTeenScreen_Click(object sender, EventArgs e)
+        {
+            this.ChangeScreens(16);
+        }
+        /*\ 断开当前视频 /*/
+        private void tsmDisVideo_Click(object sender, EventArgs e)
+        {
+            DisConnectVideo();
+        }
+        /*\ 断开全部视频 /*/
+        private void tsmDisAllVideo_Click(object sender, EventArgs e)
+        {
+            DisConnectVideoAll();
+        }
+        #endregion
+
     }
 }

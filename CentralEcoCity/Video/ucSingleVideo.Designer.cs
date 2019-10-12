@@ -30,10 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucSingleVideo));
             this.pnlCaption = new System.Windows.Forms.Panel();
-            this.lblCamName = new System.Windows.Forms.Label();
-            this.pnlShowVideo = new System.Windows.Forms.Panel();
             this.pbCapture = new System.Windows.Forms.PictureBox();
+            this.lblCamName = new System.Windows.Forms.Label();
             this.pbClose = new System.Windows.Forms.PictureBox();
+            this.pnlShowVideo = new System.Windows.Forms.Panel();
             this.pnlCaption.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCapture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbClose)).BeginInit();
@@ -55,31 +55,6 @@
             this.pnlCaption.Size = new System.Drawing.Size(360, 18);
             this.pnlCaption.TabIndex = 2;
             // 
-            // lblCamName
-            // 
-            this.lblCamName.AutoSize = true;
-            this.lblCamName.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblCamName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
-            this.lblCamName.Location = new System.Drawing.Point(5, 2);
-            this.lblCamName.Margin = new System.Windows.Forms.Padding(0);
-            this.lblCamName.Name = "lblCamName";
-            this.lblCamName.Size = new System.Drawing.Size(41, 12);
-            this.lblCamName.TabIndex = 14;
-            this.lblCamName.Text = "摄像机";
-            this.lblCamName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // pnlShowVideo
-            // 
-            this.pnlShowVideo.BackColor = System.Drawing.SystemColors.Control;
-            this.pnlShowVideo.BackgroundImage = global::CentralEcoCity.Properties.Resources.直播;
-            this.pnlShowVideo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pnlShowVideo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlShowVideo.Location = new System.Drawing.Point(0, 18);
-            this.pnlShowVideo.Name = "pnlShowVideo";
-            this.pnlShowVideo.Size = new System.Drawing.Size(360, 278);
-            this.pnlShowVideo.TabIndex = 3;
-            this.pnlShowVideo.Enter += new System.EventHandler(this.pnlShowVideo_Enter);
-            // 
             // pbCapture
             // 
             this.pbCapture.BackColor = System.Drawing.Color.Transparent;
@@ -97,6 +72,19 @@
             this.pbCapture.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbCapture_MouseDown);
             this.pbCapture.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pbCapture_MouseUp);
             // 
+            // lblCamName
+            // 
+            this.lblCamName.AutoSize = true;
+            this.lblCamName.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblCamName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
+            this.lblCamName.Location = new System.Drawing.Point(5, 2);
+            this.lblCamName.Margin = new System.Windows.Forms.Padding(0);
+            this.lblCamName.Name = "lblCamName";
+            this.lblCamName.Size = new System.Drawing.Size(41, 12);
+            this.lblCamName.TabIndex = 14;
+            this.lblCamName.Text = "摄像机";
+            this.lblCamName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // pbClose
             // 
             this.pbClose.BackColor = System.Drawing.Color.Transparent;
@@ -113,6 +101,17 @@
             this.pbClose.Click += new System.EventHandler(this.pbClose_Click);
             this.pbClose.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbClose_MouseDown);
             this.pbClose.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pbClose_MouseUp);
+            // 
+            // pnlShowVideo
+            // 
+            this.pnlShowVideo.BackColor = System.Drawing.SystemColors.Control;
+            this.pnlShowVideo.BackgroundImage = global::CentralEcoCity.Properties.Resources.直播;
+            this.pnlShowVideo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pnlShowVideo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlShowVideo.Location = new System.Drawing.Point(0, 18);
+            this.pnlShowVideo.Name = "pnlShowVideo";
+            this.pnlShowVideo.Size = new System.Drawing.Size(360, 278);
+            this.pnlShowVideo.TabIndex = 3;
             // 
             // ucSingleVideo
             // 

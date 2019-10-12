@@ -462,6 +462,10 @@ namespace CentralEcoCity.Video
             struPlayInfo.dwLinkMode = 0;       //0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP
             struPlayInfo.bBlocked = true;       //0- 非阻塞取流，1- 阻塞取流
             m_lHandle = CHCNetSDK.NET_DVR_RealPlay_V40(m_HikLoginHandle, ref struPlayInfo, null, pUser);
+            if(m_lHandle >= 0)
+            {
+                m_bConnected = true;
+            }
             uint a = CHCNetSDK.NET_DVR_GetLastError();
         }
 

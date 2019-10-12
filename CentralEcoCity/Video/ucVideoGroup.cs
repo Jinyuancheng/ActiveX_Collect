@@ -109,17 +109,20 @@ namespace CentralEcoCity.Video
         private void ucSingleVideo_DbClick(object sender, EventArgs e)
         {
             int iTag = Convert.ToInt32(((Panel)sender).Tag);
-            pnlShape.Visible = false;
-            m_fmFullScreen.Left = 0;
-            m_fmFullScreen.Top = 0;
-            m_fmFullScreen.Width = Screen.PrimaryScreen.Bounds.Width;
-            m_fmFullScreen.Height = Screen.PrimaryScreen.Bounds.Height;
-            m_fmFullScreen.Visible = true;
-            m_fmFullScreen.ConnectVideo(m_arrVideos[iTag].m_strCamId, m_arrVideos[iTag].m_strSvrIp,
-                m_arrVideos[iTag].m_strName, m_arrVideos[iTag].m_iType, m_arrVideos[iTag].m_iChannel,
-                m_arrVideos[iTag].m_HikLoginHandle);
-            //m_fmFullScreen.LocationHandle(m_arrVideos[iTag].m_lHandle, m_fmFullScreen.Handle, m_arrVideos[iTag].m_lShowWndHandle);
-            setActiveWin(iTag);
+            if(m_arrVideos[iTag].m_bConnected)
+            {
+                pnlShape.Visible = false;
+                m_fmFullScreen.Left = 0;
+                m_fmFullScreen.Top = 0;
+                m_fmFullScreen.Width = Screen.PrimaryScreen.Bounds.Width;
+                m_fmFullScreen.Height = Screen.PrimaryScreen.Bounds.Height;
+                m_fmFullScreen.Visible = true;
+                m_fmFullScreen.ConnectVideo(m_arrVideos[iTag].m_strCamId, m_arrVideos[iTag].m_strSvrIp,
+                    m_arrVideos[iTag].m_strName, m_arrVideos[iTag].m_iType, m_arrVideos[iTag].m_iChannel,
+                    m_arrVideos[iTag].m_HikLoginHandle);
+                //m_fmFullScreen.LocationHandle(m_arrVideos[iTag].m_lHandle, m_fmFullScreen.Handle, m_arrVideos[iTag].m_lShowWndHandle);
+                setActiveWin(iTag);
+            }
         }
         //分屏切换
         private void tmsiScreen_Click(object sender, EventArgs e)

@@ -493,7 +493,7 @@ namespace ReplayAx.Video
         /// <summary>
         /// 播放录像
         /// </summary>
-        /// <param name="_pchUrl">服务器Ip(摄像机ip)</param>
+        /// <param name="_pchUrl">自己api,流媒体服务器Ip(海康api,摄像机ip)</param>
         /// <param name="_startTime">开始时间</param>
         /// <param name="_endTime">结束时间</param>
         /// <param name="_playTime">播放时间</param>

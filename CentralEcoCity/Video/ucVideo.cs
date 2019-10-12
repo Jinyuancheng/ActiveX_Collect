@@ -40,13 +40,13 @@ namespace CentralEcoCity.Video
         private MSGCallBack_V31 m_MsgCallbackHik;   //海康api的回调函数
         private pReadIniCallBack m_funcReadIniMsg;  //读取配置文件的回调函数
         private List<CLoginInfo> m_lstLoginInfo;    //存储设备登录信息
-        //private Thread m_oThreadLogin;//该线程用来登录主机
+        private Thread m_oThreadLogin;//该线程用来登录主机
         private object m_oSingleLock = null;//线程锁
 
         private string m_sCapPicPath;   //抓拍图片的存储路径
         private string m_sVsClientPath; //VsClient.dll的路径
         private string m_sHCNetSDKPath; //HCNetSDK.dll的路径
-
+        private bool m_bTerminated = false;//用来判断是否结束
         //获取流媒体服务器的通道号
         public List<CHCNetSDK.NET_DVR_IPPARACFG_V40> m_lstStruIpParaCfgV40;
         #endregion
@@ -60,8 +60,8 @@ namespace CentralEcoCity.Video
             m_funcReadIniMsg = new pReadIniCallBack(ReadIniCallBack);
             m_lstLoginInfo = new List<CLoginInfo>();
             m_oSingleLock = new object();
-            //m_oThreadLogin = new Thread(ThreadLogin);
-            //m_oThreadLogin.Start();
+            m_oThreadLogin = new Thread(ThreadLogin);
+            m_oThreadLogin.Start();
 
             m_sCapPicPath = "";
             m_sVsClientPath = "";
@@ -212,17 +212,20 @@ namespace CentralEcoCity.Video
             return true;
         }
         /// <summary>
-        /// 使用线程登录
+        /// 使用线程登录（使用）
         /// </summary>
         public void ThreadLogin()
         {
-            //string file = "G:\\天津白泽技术有限公司项目\\天津白泽技术项目源文件等\\CentralEcoCity\\bin\\HCNetSDK.dll";
-            //InitHikVideoSDK(m_iHCNetDllPath);
-            Thread.Sleep(2000);
-            while (true)
+            int iDelay = 0;/*\ 延迟 /*/
+            while (!m_bTerminated)
             {
-                lock (m_oSingleLock)
+                if (m_lstLoginInfo.Count == 0)
                 {
+                    Thread.Sleep(1000);
+                }
+                else
+                {
+                    iDelay = 0;
                     if (m_lstLoginInfo.Count > 0)
                     {
                         for (int i = 0; i < m_lstLoginInfo.Count; i++)
@@ -257,11 +260,23 @@ namespace CentralEcoCity.Video
                                     {
                                         if (CHCNetSDK.NET_DVR_GetDVRConfig(m_lstLoginInfo[i].iHandle, CHCNetSDK.NET_DVR_GET_IPPARACFG_V40, iGroupNo, ptrIpParaCfgV40, dwSize, ref dwReturn))
                                         {
-                                            oIpParaCfgV40 = (CHCNetSDK.NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ptrIpParaCfgV40, typeof(CHCNetSDK.NET_DVR_IPPARACFG_V40));
-                                            m_lstStruIpParaCfgV40.Add(oIpParaCfgV40);
+                                            lock(m_oSingleLock)
+                                            {
+                                                oIpParaCfgV40 = (CHCNetSDK.NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ptrIpParaCfgV40, typeof(CHCNetSDK.NET_DVR_IPPARACFG_V40));
+                                                m_lstStruIpParaCfgV40.Add(oIpParaCfgV40);
+                                            }
                                         }
                                     }
                                 }
+                            }
+                        }
+                        while (!m_bTerminated)
+                        {
+                            iDelay++;
+                            Thread.Sleep(1000);
+                            if (iDelay > 10)
+                            {
+                                break;
                             }
                         }
                     }
@@ -326,7 +341,7 @@ namespace CentralEcoCity.Video
         }
 
         /// <summary>
-        /// 海康主机登录
+        /// 海康主机登录(未使用)
         /// </summary>
         public void HikHostLogin()
         {
@@ -411,7 +426,7 @@ namespace CentralEcoCity.Video
                 m_lstLoginInfo.Add(oLoginInfo);
             }
             /*\ 执行登录 /*/
-            HikHostLogin();
+            //HikHostLogin();
         }
         /// <summary>
         /// 初始化

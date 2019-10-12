@@ -132,8 +132,9 @@ namespace BethVideo
         private RemoteConfigCallback m_ReMoteConfig;
         private CHCNetSDK.MSGCallBack_V31 m_MsgCallback;
         private EXCEPYIONCALLBACK m_Error;
-        //private Thread m_threadLoginHost;
+        private Thread m_threadLoginHost;
         private object m_singleLock = null;
+        private bool m_bTerminated = false;
 
         private VsClientMsgCB m_MsgCallBackSelf;        //自己api的回调函数
         private pReadIniCallBack m_funcReadIniMsg;  //读取配置文件的回调函数
@@ -154,6 +155,8 @@ namespace BethVideo
             m_lstLoginInfor = new List<sLoginInfor>();
             m_deqCamTemp = new Queue<sTempUpload>();
             //tmrLoginHost.Enabled = true;
+            m_threadLoginHost = new Thread(ThreadLoginHost);
+            m_threadLoginHost.Start();
             tmrDealMsg.Enabled = true;
         }
 
@@ -427,114 +430,86 @@ namespace BethVideo
         #endregion
 
         #region 海康摄像机登录
-        //使用线程登录（未使用）
+        //使用线程登录（使用）
         private void ThreadLoginHost()
         {
-            Thread.Sleep(2000);
-            while (true)
-            {
-                lock (m_singleLock)
-                {
-                    for (int i = 0; i < m_lstLoginInfo.Count; i++)
-                    {
-                        if (m_lstLoginInfo[i].iHandle == -1)
-                        {
 
-                            NET_DVR_USER_LOGIN_INFO struLoginInfo = new NET_DVR_USER_LOGIN_INFO();
-                            NET_DVR_DEVICEINFO_V40 devInfor = new NET_DVR_DEVICEINFO_V40();
-                            devInfor.byRes2 = new byte[246];
-                            devInfor.struDeviceV30.sSerialNumber = new byte[48];
-                            devInfor.byRes2 = new byte[246];
-                            devInfor.struDeviceV30.sSerialNumber = new byte[48];
-                            struLoginInfo.sDeviceAddress = m_lstLoginInfo[i].sStreamIp;
-                            struLoginInfo.wPort = Convert.ToUInt16(m_lstLoginInfo[i].sPort); //设备服务端口
-                            struLoginInfo.sUserName = m_lstLoginInfo[i].sUser; //设备登录用户名
-                            struLoginInfo.sPassword = m_lstLoginInfo[i].sPass; //设备登录密码
-                            struLoginInfo.bUseAsynLogin = false; //同步登录方式（异步现在设备不在线时会报错，不知道啥原因）
-                            struLoginInfo.byLoginMode = 0;
-                            struLoginInfo.byHttps = 2;
-                            //m_lstLoginInfo[i].iHandle = HikVideoAPI.NET_HIK_Login_V40(ref struLoginInfo, ref devInfor);
-                            m_lstLoginInfo[i].iHandle = CHCNetSDK.NET_DVR_Login_V40(ref struLoginInfo, ref devInfor);
-                            //失败
-                            if (m_lstLoginInfo[i].iHandle < 0)
+            int iDelay = 0;/*\ 延迟 /*/
+            while (!m_bTerminated)
+            {
+                if (m_lstLoginInfo.Count == 0)
+                {
+                    Thread.Sleep(1000);
+                }
+                else
+                {
+                    iDelay = 0;
+                    if (m_lstLoginInfo.Count > 0)
+                    {
+                        for (int i = 0; i < m_lstLoginInfo.Count; i++)
+                        {
+                            if (m_lstLoginInfo[i].iHandle == -1)
                             {
-                                CHCNetSDK.NET_DVR_Logout(m_lstLoginInfo[i].iHandle);
-                                CHCNetSDK.NET_DVR_Cleanup();
-                                return;
-                            }
-                            if (m_lstLoginInfo[i].iHandle >= 0)
-                            {
-                                NET_DVR_IPPARACFG_V40 oIpParaCfgV40 = new NET_DVR_IPPARACFG_V40();
-                                uint dwSize = (uint)Marshal.SizeOf(oIpParaCfgV40);
-                                IntPtr ptrIpParaCfgV40 = Marshal.AllocHGlobal((Int32)dwSize);
-                                Marshal.StructureToPtr(oIpParaCfgV40, ptrIpParaCfgV40, false);
-                                uint dwReturn = 0;
-                                //int iGroupNo = 0; //该Demo仅获取第一组64个通道，如果设备IP通道大于64路，需要按组号0~i多次调用NET_DVR_GET_IPPARACFG_V40获取
-                                for (int iGroupNo = 0; iGroupNo < 4; iGroupNo++)
+
+                                NET_DVR_USER_LOGIN_INFO struLoginInfo = new NET_DVR_USER_LOGIN_INFO();
+                                NET_DVR_DEVICEINFO_V40 devInfor = new NET_DVR_DEVICEINFO_V40();
+                                devInfor.byRes2 = new byte[246];
+                                devInfor.struDeviceV30.sSerialNumber = new byte[48];
+                                devInfor.byRes2 = new byte[246];
+                                devInfor.struDeviceV30.sSerialNumber = new byte[48];
+                                struLoginInfo.sDeviceAddress = m_lstLoginInfo[i].sStreamIp;
+                                struLoginInfo.wPort = Convert.ToUInt16(m_lstLoginInfo[i].sPort); //设备服务端口
+                                struLoginInfo.sUserName = m_lstLoginInfo[i].sUser; //设备登录用户名
+                                struLoginInfo.sPassword = m_lstLoginInfo[i].sPass; //设备登录密码
+                                struLoginInfo.bUseAsynLogin = false; //同步登录方式（异步现在设备不在线时会报错，不知道啥原因）
+                                struLoginInfo.byLoginMode = 0;
+                                struLoginInfo.byHttps = 2;
+                                //m_lstLoginInfo[i].iHandle = HikVideoAPI.NET_HIK_Login_V40(ref struLoginInfo, ref devInfor);
+                                m_lstLoginInfo[i].iHandle = CHCNetSDK.NET_DVR_Login_V40(ref struLoginInfo, ref devInfor);
+                                //失败
+                                if (m_lstLoginInfo[i].iHandle < 0)
                                 {
-                                    if (CHCNetSDK.NET_DVR_GetDVRConfig(m_lstLoginInfo[i].iHandle, CHCNetSDK.NET_DVR_GET_IPPARACFG_V40, iGroupNo, ptrIpParaCfgV40, dwSize, ref dwReturn))
+                                    CHCNetSDK.NET_DVR_Logout(m_lstLoginInfo[i].iHandle);
+                                    CHCNetSDK.NET_DVR_Cleanup();
+                                    return;
+                                }
+                                if (m_lstLoginInfo[i].iHandle >= 0)
+                                {
+                                    NET_DVR_IPPARACFG_V40 oIpParaCfgV40 = new NET_DVR_IPPARACFG_V40();
+                                    uint dwSize = (uint)Marshal.SizeOf(oIpParaCfgV40);
+                                    IntPtr ptrIpParaCfgV40 = Marshal.AllocHGlobal((Int32)dwSize);
+                                    Marshal.StructureToPtr(oIpParaCfgV40, ptrIpParaCfgV40, false);
+                                    uint dwReturn = 0;
+                                    //int iGroupNo = 0; //该Demo仅获取第一组64个通道，如果设备IP通道大于64路，需要按组号0~i多次调用NET_DVR_GET_IPPARACFG_V40获取
+                                    for (int iGroupNo = 0; iGroupNo < 4; iGroupNo++)
                                     {
-                                        oIpParaCfgV40 = (CHCNetSDK.NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ptrIpParaCfgV40, typeof(CHCNetSDK.NET_DVR_IPPARACFG_V40));
-                                        m_lstStruIpParaCfgV40.Add(oIpParaCfgV40);
+                                        if (CHCNetSDK.NET_DVR_GetDVRConfig(m_lstLoginInfo[i].iHandle, CHCNetSDK.NET_DVR_GET_IPPARACFG_V40, iGroupNo, ptrIpParaCfgV40, dwSize, ref dwReturn))
+                                        {
+                                            lock(m_singleLock)
+                                            {
+                                                oIpParaCfgV40 = (CHCNetSDK.NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ptrIpParaCfgV40, typeof(CHCNetSDK.NET_DVR_IPPARACFG_V40));
+                                                m_lstStruIpParaCfgV40.Add(oIpParaCfgV40);
+                                            }
+                                        }
                                     }
                                 }
                             }
-
-                            //NET_DVR_USER_LOGIN_INFO struLoginInfo = new NET_DVR_USER_LOGIN_INFO();
-                            //struLoginInfo.sDeviceAddress = m_lstLoginInfor[i].strIp;
-                            //struLoginInfo.wPort = Convert.ToUInt16(m_lstLoginInfor[i].iPort); //设备服务端口
-                            //struLoginInfo.sUserName = m_lstLoginInfor[i].strUser; //设备登录用户名
-                            //struLoginInfo.sPassword = m_lstLoginInfor[i].strPsw; //设备登录密码
-                            //struLoginInfo.bUseAsynLogin = false; //同步登录方式（异步现在设备不在线时会报错，不知道啥原因）
-                            //struLoginInfo.byLoginMode = 0;
-                            ////struLoginInfo.byHttps = 2;
-                            //try
-                            //{
-                            //    m_lstLoginInfor[i].iHandle = HikVideoAPI.NET_HIK_Login_V40(ref struLoginInfo, ref m_lstLoginInfor[i].devInfor);
-                            //}
-                            //finally
-                            //{
-                            //    if (m_lstLoginInfor[i].iHandle >= 0)
-                            //    {
-                            //        if (m_lstLoginInfor[i].iType == 1 && m_lstLoginInfor[i].iRemoteHanle == -1) //热成像摄像机
-                            //        {
-                            //            NET_DVR_REALTIME_THERMOMETRY_COND struThermCond = new NET_DVR_REALTIME_THERMOMETRY_COND();
-                            //            struThermCond.dwSize = (uint)Marshal.SizeOf(struThermCond);
-                            //            struThermCond.byRuleID = 1;       //规则ID，0代表获取全部规则，具体规则ID从1开始
-                            //            struThermCond.dwChan = 2; //从1开始，0xffffffff代表获取全部通道
-                            //            int dwSize = Marshal.SizeOf(struThermCond);
-                            //            IntPtr ptrStruCond = Marshal.AllocHGlobal(dwSize);
-                            //            Marshal.StructureToPtr(struThermCond, ptrStruCond, false);
-                            //            m_lstLoginInfor[i].iRemoteHanle = HikVideoAPI.NET_HIK_StartRemoteConfig(m_lstLoginInfor[i].iHandle, 3629,
-                            //                ptrStruCond, Marshal.SizeOf(struThermCond),
-                            //                m_ReMoteConfig, (IntPtr)m_lstLoginInfor[i].iHandle);
-                            //            //后加
-                            //            LPNET_DVR_SETUPALARM_PARAM strSetData = new LPNET_DVR_SETUPALARM_PARAM();
-                            //            HikVideoAPI.NET_HIK_SetupAlarmChan_V41(m_lstLoginInfor[i].iHandle, strSetData);
-                            //        }
-                            //        //是动环主机
-                            //        if (m_lstLoginInfor[i].iType == 2)
-                            //        {
-                            //            HikVideoAPI.NET_HIK_SetupAlarmChan_V30(m_lstLoginInfor[i].iHandle);
-                            //            //LPNET_DVR_SETUPALARM_PARAM strSetData = new LPNET_DVR_SETUPALARM_PARAM();
-                            //            //HikVideoAPI.NET_HIK_SetupAlarmChan_V41(m_lstLoginInfor[i].iHandle, strSetData);
-                            //            //HikVideoAPI.NET_HIK_StartListen_V30(null, 8000, MsgCallback_V31, (IntPtr)m_lstLoginInfor[i].iHandle);
-                            //        }
-                            //        //门禁
-                            //        if (m_lstLoginInfor[i].iType == 3)
-                            //        {
-                            //            LPNET_DVR_SETUPALARM_PARAM strSetData = new LPNET_DVR_SETUPALARM_PARAM();
-                            //            HikVideoAPI.NET_HIK_SetupAlarmChan_V41(m_lstLoginInfor[i].iHandle, strSetData);
-                            //            //}
-                            //        }
-                            //}
+                        }
+                        while (!m_bTerminated)
+                        {
+                            iDelay++;
+                            Thread.Sleep(1000);
+                            if (iDelay > 10)
+                            {
+                                break;
+                            }
                         }
                     }
                 }
             }
         }
         /// <summary>
-        /// 海康主机登录
+        /// 海康主机登录(未使用)
         /// </summary>
         private void HikHostLogin()
         {
@@ -877,7 +852,7 @@ namespace BethVideo
                 oLoginInfo.sStreamIp = _sStreamIp;
                 m_lstLoginInfo.Add(oLoginInfo);
             }
-            HikHostLogin();
+            //HikHostLogin();
         }
 
         /// <summary>

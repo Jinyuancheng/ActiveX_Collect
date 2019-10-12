@@ -43,7 +43,7 @@
             // 
             // pnlShape
             // 
-            this.pnlShape.BackColor = System.Drawing.Color.PaleGreen;
+            this.pnlShape.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(148)))), ((int)(((byte)(187)))));
             this.pnlShape.Location = new System.Drawing.Point(196, 107);
             this.pnlShape.Name = "pnlShape";
             this.pnlShape.Size = new System.Drawing.Size(47, 43);
@@ -58,7 +58,7 @@
             this.tsmDisVideo,
             this.tsmDisAllVideo});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 70);
             // 
             // tsmSplitScreen
             // 
@@ -68,7 +68,7 @@
             this.tsmNineScreen,
             this.tsmSixTeenScreen});
             this.tsmSplitScreen.Name = "tsmSplitScreen";
-            this.tsmSplitScreen.Size = new System.Drawing.Size(180, 22);
+            this.tsmSplitScreen.Size = new System.Drawing.Size(148, 22);
             this.tsmSplitScreen.Text = "分屏切换";
             // 
             // tsmOneScreen
@@ -102,14 +102,14 @@
             // tsmDisVideo
             // 
             this.tsmDisVideo.Name = "tsmDisVideo";
-            this.tsmDisVideo.Size = new System.Drawing.Size(180, 22);
+            this.tsmDisVideo.Size = new System.Drawing.Size(148, 22);
             this.tsmDisVideo.Text = "断开视频";
             this.tsmDisVideo.Click += new System.EventHandler(this.tsmDisVideo_Click);
             // 
             // tsmDisAllVideo
             // 
             this.tsmDisAllVideo.Name = "tsmDisAllVideo";
-            this.tsmDisAllVideo.Size = new System.Drawing.Size(180, 22);
+            this.tsmDisAllVideo.Size = new System.Drawing.Size(148, 22);
             this.tsmDisAllVideo.Text = "断开全部视频";
             this.tsmDisAllVideo.Click += new System.EventHandler(this.tsmDisAllVideo_Click);
             // 

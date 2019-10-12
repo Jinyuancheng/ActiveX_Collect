@@ -93,9 +93,39 @@ namespace BethVideo.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap 双视 {
+            get {
+                object obj = ResourceManager.GetObject("双视", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap 双视1 {
+            get {
+                object obj = ResourceManager.GetObject("双视1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap 双视2 {
             get {
                 object obj = ResourceManager.GetObject("双视2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap 双视3 {
+            get {
+                object obj = ResourceManager.GetObject("双视3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

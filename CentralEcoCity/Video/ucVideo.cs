@@ -186,6 +186,7 @@ namespace CentralEcoCity.Video
                         JToken jToken = Obj.Value;
                         m_sHCNetSDKPath = jToken.Value<string>();
                         //设置海康的环境变量
+                        //string sPath = m_sHCNetSDKPath.Replace("\\\\", "\\");
                         System.Environment.SetEnvironmentVariable("HDCNETSDK", m_sHCNetSDKPath);
                     }
                 }

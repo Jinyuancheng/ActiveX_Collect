@@ -10,6 +10,7 @@ namespace PreviewDemo
     {
         //public const string filename = "C:\\xampp\\htdocs\\ecological_city\\Plugin\\CentralEcoCity\\bin\\HCNetSDK.dll";
         //public const string filename = "G:\\天津白泽技术有限公司项目\\天津白泽技术项目源文件等\\CentralEcoCity\\bin\\HCNetSDK.dll";
+        //public const string filename = "C:\\BethlabsCom\\HikDll\\HCNetSDK.dll";
         public CHCNetSDK()
         {
             //

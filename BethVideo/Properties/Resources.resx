@@ -118,19 +118,28 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="双视2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\双视2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="VideoBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\VideoBack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="双视" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\双视.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="VideoClose_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\VideoClose_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="双视2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\双视2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="双视1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\双视.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="VideoClose_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\VideoClose_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="VideoBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\VideoBack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="双视大屏1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\双视大屏1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="双视3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\双视1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

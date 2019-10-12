@@ -478,6 +478,15 @@ namespace CentralEcoCity.Video
             {
                 CHCNetSDK.NET_DVR_StopRealPlay(m_lHandle);
                 m_lHandle = -1;
+                m_strCamId = "";
+                m_strSvrIp = "";
+                m_bConnected = false;
+                m_bRecording = false;
+                pnlCaption.Visible = false;
+                m_iType = -1;
+                m_iChannel = -1;
+                m_bIsFirstFloder = false;
+                m_HikLoginHandle = -1;
             }
         }
         #endregion

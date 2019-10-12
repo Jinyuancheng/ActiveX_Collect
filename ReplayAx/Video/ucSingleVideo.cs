@@ -495,7 +495,7 @@ namespace ReplayAx.Video
                         m_fmFullScreen.Visible = true;
                         m_fmFullScreen.StartPlayHik(m_iLoginHandle, m_sStartTime, m_sEndTime,
                             m_iChannel, m_iCamType);
-                        Thread.Sleep(500);
+                        Thread.Sleep(550);
                         m_fmFullScreen.SetPlayPlanHik(GetReplayOSDTime());
                         break;
                 }

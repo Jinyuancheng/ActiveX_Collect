@@ -59,7 +59,8 @@ namespace ReplayAx.Video
         private CHCNetSDK.MSGCallBack_V31 m_MsgCallbackHik; //回调函数
         private List<CLoginInfo> m_lstLoginInfo;   //用来存储登录信息
         private object m_oSingleLock;    //线程锁
-        //private Thread m_oThread;        //开启子线程用来做海康摄像机登录操作
+        private Thread m_oThread;        //开启子线程用来做海康摄像机登录操作
+        private bool m_bTerminated = false;/*\ 判断是否结束 /*/
 
         private bool m_bIsFirstFloder;  //是否是第一次文件夹（配置文件中没有抓拍文件的路径）
         private List<NET_DVR_IPPARACFG_V40> m_lstStruIpParaCfgV40;//用来存储计算通道号的信息数据
@@ -160,8 +161,8 @@ namespace ReplayAx.Video
             m_MsgCallbackHik = new CHCNetSDK.MSGCallBack_V31(MsgCallbackHik);
             m_lstLoginInfo = new List<CLoginInfo>();
             m_oSingleLock = new object();
-            //m_oThread = new Thread(ThreadLogin);
-            //m_oThread.Start();
+            m_oThread = new Thread(ThreadLogin);
+            m_oThread.Start();
 
             //初始化读取配置文件的信息
             m_sCapPicPath = "";
@@ -245,18 +246,23 @@ namespace ReplayAx.Video
         #endregion
 
         /// <summary>
-        /// 使用线程登录（未使用）
+        /// 使用线程登录（使用）
         /// </summary>
         public void ThreadLogin()
         {
             //string file = "G:\\天津白泽技术有限公司项目\\天津白泽技术项目源文件等\\CentralEcoCity\\bin\\HCNetSDK.dll";
             //InitHikVideoSDK(m_iHCNetDllPath);
-            Thread.Sleep(2000);
-            while (true)
+            int iDelay = 0;/*\ 延迟 /*/
+            while(!m_bTerminated)
             {
-                lock (m_oSingleLock)
+                if(m_lstLoginInfo.Count == 0)
                 {
-                    if (m_lstLoginInfo.Count > 0)
+                    Thread.Sleep(1000);
+                }
+                else
+                {
+                    iDelay = 0;
+                    if(m_lstLoginInfo.Count > 0)
                     {
                         for (int i = 0; i < m_lstLoginInfo.Count; i++)
                         {
@@ -278,13 +284,7 @@ namespace ReplayAx.Video
                                 //m_lstLoginInfo[i].iHandle = HikVideoAPI.NET_HIK_Login_V40(ref struLoginInfo, ref devInfor);
                                 m_lstLoginInfo[i].iHandle = CHCNetSDK.NET_DVR_Login_V40(ref struLoginInfo, ref devInfor);
                                 //失败
-                                if (m_lstLoginInfo[i].iHandle < 0)
-                                {
-                                    CHCNetSDK.NET_DVR_Logout(m_lstLoginInfo[i].iHandle);
-                                    CHCNetSDK.NET_DVR_Cleanup();
-                                    return;
-                                }
-                                else
+                                if (m_lstLoginInfo[i].iHandle >= 0)
                                 {
                                     //存储数据用来计算通道号
                                     NET_DVR_IPPARACFG_V40 oIpParaCfgV40 = new NET_DVR_IPPARACFG_V40();
@@ -297,15 +297,24 @@ namespace ReplayAx.Video
                                     {
                                         if (CHCNetSDK.NET_DVR_GetDVRConfig(m_lstLoginInfo[i].iHandle, CHCNetSDK.NET_DVR_GET_IPPARACFG_V40, iGroupNo, ptrIpParaCfgV40, dwSize, ref dwReturn))
                                         {
-                                            oIpParaCfgV40 = (CHCNetSDK.NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ptrIpParaCfgV40, typeof(CHCNetSDK.NET_DVR_IPPARACFG_V40));
-                                            m_lstStruIpParaCfgV40.Add(oIpParaCfgV40);
+                                            lock(m_oSingleLock)
+                                            {
+                                                oIpParaCfgV40 = (CHCNetSDK.NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ptrIpParaCfgV40, typeof(CHCNetSDK.NET_DVR_IPPARACFG_V40));
+                                                m_lstStruIpParaCfgV40.Add(oIpParaCfgV40);
+                                            }
                                         }
                                     }
                                 }
-                                //第二种登录
-                                //CHCNetSDK.NET_DVR_DEVICEINFO_V30 DeviceInfo = new CHCNetSDK.NET_DVR_DEVICEINFO_V30();
-                                //m_lstLoginInfo[i].iHandle = CHCNetSDK.NET_DVR_Login_V30(m_lstLoginInfo[i].sIp, Convert.ToInt32(m_lstLoginInfo[i].sPort),
-                                //    m_lstLoginInfo[i].sUser, m_lstLoginInfo[i].sPass, ref DeviceInfo);
+                            }
+
+                        }
+                        while (!m_bTerminated)
+                        {
+                            iDelay++;
+                            Thread.Sleep(1000);
+                            if (iDelay > 10)
+                            {
+                                break;
                             }
                         }
                     }
@@ -313,7 +322,7 @@ namespace ReplayAx.Video
             }
         }
         /// <summary>
-        /// 海康主机登录（使用）
+        /// 海康主机登录（未使用）
         /// </summary>
         public void HikHostLogin()
         {
@@ -342,7 +351,6 @@ namespace ReplayAx.Video
                         if (m_lstLoginInfo[i].iHandle < 0)
                         {
                             CHCNetSDK.NET_DVR_Logout(m_lstLoginInfo[i].iHandle);
-                            CHCNetSDK.NET_DVR_Cleanup();
                             return;
                         }
                         else
@@ -436,7 +444,7 @@ namespace ReplayAx.Video
                 oLoginInfo.sStreamIp = _sStreamIp;
                 m_lstLoginInfo.Add(oLoginInfo);
             }
-            HikHostLogin();
+            //HikHostLogin();
         }
         /// <summary>
         /// 初始化ActiveX

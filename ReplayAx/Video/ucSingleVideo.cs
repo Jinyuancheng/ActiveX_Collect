@@ -470,6 +470,8 @@ namespace ReplayAx.Video
             return oOSDTime;
         }
         #endregion
+
+        #region [双击放大] 双击放大视频
         /// <summary>
         /// 双击放大视频
         /// </summary>
@@ -495,11 +497,13 @@ namespace ReplayAx.Video
                         m_fmFullScreen.Visible = true;
                         m_fmFullScreen.StartPlayHik(m_iLoginHandle, m_sStartTime, m_sEndTime,
                             m_iChannel, m_iCamType);
-                        Thread.Sleep(600);
+                        Thread.Sleep(800);
                         m_fmFullScreen.SetPlayPlanHik(GetReplayOSDTime());
                         break;
                 }
             }
         }
+        #endregion
+
     }
 }

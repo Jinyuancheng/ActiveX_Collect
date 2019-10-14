@@ -433,7 +433,6 @@ namespace BethVideo
         //使用线程登录（使用）
         private void ThreadLoginHost()
         {
-
             int iDelay = 0;/*\ 延迟 /*/
             while (!m_bTerminated)
             {
@@ -481,7 +480,8 @@ namespace BethVideo
                                     Marshal.StructureToPtr(oIpParaCfgV40, ptrIpParaCfgV40, false);
                                     uint dwReturn = 0;
                                     //int iGroupNo = 0; //该Demo仅获取第一组64个通道，如果设备IP通道大于64路，需要按组号0~i多次调用NET_DVR_GET_IPPARACFG_V40获取
-                                    for (int iGroupNo = 0; iGroupNo < 4; iGroupNo++)
+                                    /*\ 共16组每组64个 /*/
+                                    for (int iGroupNo = 0; iGroupNo < 15; iGroupNo++)
                                     {
                                         if (CHCNetSDK.NET_DVR_GetDVRConfig(m_lstLoginInfo[i].iHandle, CHCNetSDK.NET_DVR_GET_IPPARACFG_V40, iGroupNo, ptrIpParaCfgV40, dwSize, ref dwReturn))
                                         {

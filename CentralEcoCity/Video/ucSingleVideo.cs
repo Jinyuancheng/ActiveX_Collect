@@ -25,18 +25,19 @@ namespace CentralEcoCity.Video
             Init();
         }
 
-        public string m_strName;          //摄像机名称
-        public string m_strCamId;         //是否显示了视频(用于直播)
-        public string m_strSvrIp;         //流媒体IP地址
-        public Int32 m_lHandle;          //连接句柄
-        public bool m_bConnected;       //是否连接成功
-        public bool m_bRecording;       //是否正在录像
-        private string m_CapPath;          //抓拍图片的路径
-        public int m_HikLoginHandle;   //海康摄像机的登录句柄
-        public int m_iType;            //调用api类型#30859A
-        public int m_iChannel;      //海康摄像机播放通道号
-        public bool m_bIsFirstFloder;   //是否是第一次选择文件夹
+        public string m_strName;                   //摄像机名称
+        public string m_strCamId;                  //是否显示了视频(用于直播)
+        public string m_strSvrIp;                  //流媒体IP地址
+        public Int32 m_lHandle;                    //连接句柄
+        public bool m_bConnected;                  //是否连接成功
+        public bool m_bRecording;                  //是否正在录像
+        private string m_CapPath;                  //抓拍图片的路径
+        public int m_HikLoginHandle;               //海康摄像机的登录句柄
+        public int m_iType;                        //调用api类型#30859A
+        public int m_iChannel;                     //海康摄像机播放通道号
+        public bool m_bIsFirstFloder;              //是否是第一次选择文件夹
         public event pSetCapPath m_evntSetCapPath; //用来设置所有摄像机的抓拍路径
+        public string m_strHikCamIp;               //海康摄像机ip 
 
         #region 初始化 成员变量等
         /// <summary>
@@ -54,7 +55,18 @@ namespace CentralEcoCity.Video
             m_iChannel = -1;
             m_bIsFirstFloder = false;
             m_HikLoginHandle = -1;
+            m_strHikCamIp = "";
+        }
+        #endregion
 
+        #region [过程] [get set方法]
+        /// <summary>
+        /// 设置海康摄像机ip
+        /// </summary>
+        /// <param name="_strCamIp">设置海康摄像机ip</param>
+        public void SetHikCamIp(string _strCamIp)
+        {
+            m_strHikCamIp = _strCamIp;
         }
         #endregion
 
@@ -153,6 +165,7 @@ namespace CentralEcoCity.Video
                 m_iChannel = -1;
                 m_bIsFirstFloder = false;
                 m_HikLoginHandle = -1;
+                m_strHikCamIp = "";
             }
         }
         //开始录像
@@ -462,7 +475,7 @@ namespace CentralEcoCity.Video
             struPlayInfo.dwLinkMode = 0;       //0- TCP方式，1- UDP方式，2- 多播方式，3- RTP方式，4-RTP/RTSP，5-RSTP/HTTP
             struPlayInfo.bBlocked = true;       //0- 非阻塞取流，1- 阻塞取流
             m_lHandle = CHCNetSDK.NET_DVR_RealPlay_V40(m_HikLoginHandle, ref struPlayInfo, null, pUser);
-            if(m_lHandle >= 0)
+            if (m_lHandle >= 0)
             {
                 m_bConnected = true;
             }
@@ -487,6 +500,7 @@ namespace CentralEcoCity.Video
                 m_iChannel = -1;
                 m_bIsFirstFloder = false;
                 m_HikLoginHandle = -1;
+                m_strHikCamIp = "";
             }
         }
         #endregion

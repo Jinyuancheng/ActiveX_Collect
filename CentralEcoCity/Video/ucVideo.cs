@@ -261,7 +261,7 @@ namespace CentralEcoCity.Video
                                     {
                                         if (CHCNetSDK.NET_DVR_GetDVRConfig(m_lstLoginInfo[i].iHandle, CHCNetSDK.NET_DVR_GET_IPPARACFG_V40, iGroupNo, ptrIpParaCfgV40, dwSize, ref dwReturn))
                                         {
-                                            lock(m_oSingleLock)
+                                            lock (m_oSingleLock)
                                             {
                                                 oIpParaCfgV40 = (CHCNetSDK.NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ptrIpParaCfgV40, typeof(CHCNetSDK.NET_DVR_IPPARACFG_V40));
                                                 m_lstStruIpParaCfgV40.Add(oIpParaCfgV40);
@@ -460,13 +460,13 @@ namespace CentralEcoCity.Video
         /// <summary>
         /// 连接视频
         /// </summary>
-        /// <param name="sIp">连接视频的ip</param>
+        /// <param name="sIp">连接视频的ip(自己api传入流媒体ip,海康api传入摄像机ip)</param>
         /// <param name="sId">连接视频的id</param>
         /// <param name="sCamName">摄像机的名称</param>
         /// <param name="sUser">用户名</param>
         /// <param name="sPass">密码</param>
         /// <param name="sType">连接类型 1.自己 2.海康</param>
-        public void ConnectVideo(string sIp, string sId, string sCamName, string sUser,
+        public void ConnectVideo(string sIp, string sId, string sStreamIp, string sCamName, string sUser,
             string sPass, string sType)
         {
             int iType = Convert.ToInt32(sType);
@@ -475,23 +475,21 @@ namespace CentralEcoCity.Video
             {
                 case 1://自己的api
                     iChannel = Convert.ToInt32(sId.Substring(sId.Length - 1, 1));
-                    ucVGSHow.ConnectVideo(sId, sIp, sCamName, iType, iChannel);
+                    ucVGSHow.ConnectVideo(sId, sStreamIp, sCamName, iType, iChannel);
                     break;
                 case 2://海康的api
+                    iChannel = RetChannelWithIp(sIp);
                     if (m_lstLoginInfo.Count > 0)
                     {
-                        iChannel = RetChannelWithIp(sIp); ;
                         for (int i = 0; i < m_lstLoginInfo.Count; i++)
                         {
-                            if (m_lstLoginInfo[i].iHandle != -1)
+                            if (sStreamIp == m_lstLoginInfo[i].sIp && m_lstLoginInfo[i].iHandle >= 0)
                             {
-                                ucVGSHow.ConnectVideo(sId, m_lstLoginInfo[i].sIp, sCamName, iType, iChannel, m_lstLoginInfo[i].iHandle);
+                                ucVGSHow.ConnectVideo(sId, sIp, sCamName, iType, iChannel, m_lstLoginInfo[i].iHandle);
                                 break;
                             }
                         }
                     }
-                    break;
-                default:
                     break;
             }
         }

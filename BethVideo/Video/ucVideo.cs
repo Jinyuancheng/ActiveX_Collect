@@ -923,6 +923,7 @@ namespace BethVideo
         public void UnInitBethVideo()
         {
             tmrDealMsg.Enabled = false;
+            ucVideoMain.DisAllConnectVideo();
             for (int i = 0; i < m_lstLoginInfor.Count; i++)
             {
                 if (m_lstLoginInfor[i].iHandle >= 0)
@@ -930,6 +931,9 @@ namespace BethVideo
                     CHCNetSDK.NET_DVR_Logout_V30(m_lstLoginInfor[i].iHandle);
                 }
             }
+            m_lstLoginInfo.Clear();
+            VsClientAPI.VSSP_ClientCleanup();
+            CHCNetSDK.NET_DVR_Cleanup();
         }
         #endregion
 

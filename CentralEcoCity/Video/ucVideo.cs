@@ -68,7 +68,7 @@ namespace CentralEcoCity.Video
             m_sCapPicPath = "";
             m_sVsClientPath = "";
             m_sHCNetSDKPath = "";
-            
+
 
             m_lstStruIpParaCfgV40 = new List<NET_DVR_IPPARACFG_V40>();
         }
@@ -175,7 +175,7 @@ namespace CentralEcoCity.Video
                         m_sVsClientPath = jToken.Value<string>();
                         if (m_sVsClientPath != "")
                         {
-                            if(!m_bIsInitSelfSucc)
+                            if (!m_bIsInitSelfSucc)
                             {
                                 //加载自己的api库
                                 if (VsClientAPI.LoadVsClientAPI(m_sVsClientPath))
@@ -444,7 +444,7 @@ namespace CentralEcoCity.Video
         public void InitVideoAx(string _sReadIniDllPath, string _sReadIniFilePath)
         {
             this.ucVGSHow.Dock = DockStyle.Fill;
-            if(!m_bIsInitHikSucc)
+            if (!m_bIsInitHikSucc)
             {
                 //加载读取配置文件的api
                 if (ReadIniAPI.LoadReadIniAPI(_sReadIniDllPath))
@@ -588,6 +588,15 @@ namespace CentralEcoCity.Video
         {
             m_bIsInitHikSucc = false;
             m_bIsInitSelfSucc = false;
+            ucVGSHow.DisConnectVideoAll();
+            for (int i = 0; i < m_lstLoginInfo.Count; i++)
+            {
+                if (m_lstLoginInfo[i].iHandle != -1)
+                {
+                    CHCNetSDK.NET_DVR_Logout(m_lstLoginInfo[i].iHandle);
+                    m_lstLoginInfo.Clear();
+                }
+            }
             bool bHikIsSucc = CHCNetSDK.NET_DVR_Cleanup();
             Int32 iIsSucc = VsClientAPI.VSSP_ClientCleanup();
         }

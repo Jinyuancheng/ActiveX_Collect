@@ -323,7 +323,7 @@ namespace CentralEcoCity.Video
                         string CapPathSelf = CapPathPath + DateTime.Now.ToString("yyyyMMddHHmmss") + ".bmp";
                         if (CaptureBmp(CapPathSelf) >= 0)
                         {
-                            MessageBox.Show("图片以保存", "提示");
+                            MessageBox.Show("图片已保存", "提示");
                         }
                         else
                         {
@@ -341,7 +341,7 @@ namespace CentralEcoCity.Video
                         {
                             CHCNetSDK.NET_DVR_GetLastError();
                             m_bIsFirstFloder = true;
-                            MessageBox.Show("图片以保存", "提示");
+                            MessageBox.Show("图片已保存", "提示");
                         }
                         else
                         {
@@ -374,7 +374,7 @@ namespace CentralEcoCity.Video
                         string CapPathSelf = CapPathPath + DateTime.Now.ToString("yyyyMMddHHmmss") + ".bmp";
                         if (CaptureBmp(CapPathSelf) >= 0)
                         {
-                            MessageBox.Show("图片以保存", "提示");
+                            MessageBox.Show("图片已保存", "提示");
                         }
                         else
                         {
@@ -403,7 +403,7 @@ namespace CentralEcoCity.Video
                         {
                             CHCNetSDK.NET_DVR_GetLastError();
                             m_bIsFirstFloder = true;
-                            MessageBox.Show("图片以保存", "提示");
+                            MessageBox.Show("图片已保存", "提示");
                         }
                         else
                         {

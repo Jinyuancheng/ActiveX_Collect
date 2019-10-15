@@ -221,9 +221,9 @@ namespace CentralEcoCity.Video
         public ucSingleVideo GetSingleByHikCamIp(string _strCamIp)
         {
             ucSingleVideo oVideo = null;
-            for(int i = 0;i <m_iMaxScreen;i++)
+            for (int i = 0; i < m_iMaxScreen; i++)
             {
-                if(m_arrVideos[i].m_strHikCamIp == _strCamIp)
+                if (m_arrVideos[i].m_strHikCamIp == _strCamIp)
                 {
                     oVideo = m_arrVideos[i];
                     break;
@@ -281,13 +281,59 @@ namespace CentralEcoCity.Video
             ucSingleVideo oSelfCamVideo = GetSingleFormByCamId(strId);
             /*\ 根据海康 /*/
             ucSingleVideo oHikCamVideo = GetSingleByHikCamIp(strIp);
-            switch(iType)
+            //if (oSelfCamVideo != null)
+            //{
+            //    if (m_arrVideos[Convert.ToInt32(oSelfCamVideo.Tag)].m_strCamId == strId)
+            //    {
+            //        setActiveWin(Convert.ToInt32(oSelfCamVideo.Tag));
+            //    }
+            //    else if (m_arrVideos[Convert.ToInt32(oHikCamVideo.Tag)].m_strHikCamIp == strIp)
+            //    {
+            //        setActiveWin(Convert.ToInt32(oHikCamVideo.Tag));
+            //    }
+            //    else
+            //    {
+            //        switch (iType)
+            //        {
+            //            case 1://自己api
+            //                /*\ 断开当前连接的视频 /*/
+            //                m_arrVideos[Convert.ToInt32(oSelfCamVideo.Tag)].DisConnectVideo();
+            //                /*\ 连接新id的视频 /*/
+            //                m_arrVideos[Convert.ToInt32(oSelfCamVideo.Tag)].ConnectVideo(strId, strIp, strName);
+            //                m_arrVideos[Convert.ToInt32(oSelfCamVideo.Tag)].SetCamType(iType, iChannel);
+            //                m_arrVideos[Convert.ToInt32(oSelfCamVideo.Tag)].ShowVideoCaption(true);
+            //                break;
+            //            case 2://海康api
+            //                /*\ 断开当前连接的视频 /*/
+            //                m_arrVideos[Convert.ToInt32(oHikCamVideo.Tag)].DisConnectVideo();
+            //                /*\ 连接新id的视频 /*/
+            //                m_arrVideos[Convert.ToInt32(oHikCamVideo.Tag)].ConnectVideoHik(iLoginHandle, iChannel, strName);
+            //                m_arrVideos[Convert.ToInt32(oHikCamVideo.Tag)].SetHikCamIp(strIp);
+            //                m_arrVideos[Convert.ToInt32(oHikCamVideo.Tag)].SetCamType(iType, iChannel);
+            //                m_arrVideos[Convert.ToInt32(oHikCamVideo.Tag)].ShowVideoCaption(true);
+            //                break;
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    switch (iType)
+            //    {
+            //        case 1://自己api
+
+            //            break;
+            //        case 2://海康api
+            //            break;
+            //    }
+            //}
+
+            switch (iType)
             {
                 case 1://自己api
-                    if(oSelfCamVideo == null)
+                    if (oSelfCamVideo == null)
                     {
                         ucSingleVideo oVideo = GetNextNullWin();
-                        if(oVideo != null)
+                        if (oVideo != null)
                         {
                             oVideo.ConnectVideo(strId, strIp, strName);
                             oVideo.SetCamType(iType, iChannel);
@@ -297,7 +343,7 @@ namespace CentralEcoCity.Video
                     else
                     {
                         /*\ 判断当先显示的视频是否和要在活动窗口显示的视频id相等 /*/
-                        if(m_arrVideos[Convert.ToInt32(oSelfCamVideo.Tag)].m_strCamId == strId)
+                        if (m_arrVideos[Convert.ToInt32(oSelfCamVideo.Tag)].m_strCamId == strId)
                         {
                             setActiveWin(Convert.ToInt32(oSelfCamVideo.Tag));
                         }
@@ -313,10 +359,10 @@ namespace CentralEcoCity.Video
                     }
                     break;
                 case 2://海康api
-                    if(oHikCamVideo == null)
+                    if (oHikCamVideo == null)
                     {
                         ucSingleVideo oVideo = GetNextNullWin();
-                        if(oVideo != null)
+                        if (oVideo != null)
                         {
                             oVideo.ConnectVideoHik(iLoginHandle, iChannel, strName);
                             oVideo.SetHikCamIp(strIp);

@@ -42,6 +42,8 @@ namespace CentralEcoCity.Video
         private List<CLoginInfo> m_lstLoginInfo;    //存储设备登录信息
         private Thread m_oThreadLogin;//该线程用来登录主机
         private object m_oSingleLock = null;//线程锁
+        private bool m_bIsInitHikSucc = false;//海康是否初始化成功
+        private bool m_bIsInitSelfSucc = false;//自己api是否初始化成功
 
         private string m_sCapPicPath;   //抓拍图片的存储路径
         private string m_sVsClientPath; //VsClient.dll的路径
@@ -66,6 +68,7 @@ namespace CentralEcoCity.Video
             m_sCapPicPath = "";
             m_sVsClientPath = "";
             m_sHCNetSDKPath = "";
+            
 
             m_lstStruIpParaCfgV40 = new List<NET_DVR_IPPARACFG_V40>();
         }
@@ -172,11 +175,15 @@ namespace CentralEcoCity.Video
                         m_sVsClientPath = jToken.Value<string>();
                         if (m_sVsClientPath != "")
                         {
-                            //加载自己的api库
-                            if (VsClientAPI.LoadVsClientAPI(m_sVsClientPath))
+                            if(!m_bIsInitSelfSucc)
                             {
-                                VsClientAPI.VSSP_ClientStartup(DefIcomClient.WM_VSCLIENT_DLL_MSG, this.Handle, m_MsgCallBack);
-                                VsClientAPI.VSSP_ClientWaitTime(2, 2);
+                                //加载自己的api库
+                                if (VsClientAPI.LoadVsClientAPI(m_sVsClientPath))
+                                {
+                                    VsClientAPI.VSSP_ClientStartup(DefIcomClient.WM_VSCLIENT_DLL_MSG, this.Handle, m_MsgCallBack);
+                                    VsClientAPI.VSSP_ClientWaitTime(2, 2);
+                                    m_bIsInitSelfSucc = true;
+                                }
                             }
                         }
                     }
@@ -437,25 +444,28 @@ namespace CentralEcoCity.Video
         public void InitVideoAx(string _sReadIniDllPath, string _sReadIniFilePath)
         {
             this.ucVGSHow.Dock = DockStyle.Fill;
-            //加载读取配置文件的api
-            if (ReadIniAPI.LoadReadIniAPI(_sReadIniDllPath))
+            if(!m_bIsInitHikSucc)
             {
-                ReadIniAPI.StartUp(_sReadIniFilePath, m_funcReadIniMsg);
-                //读取配置文件 并存储起来
-                ReadIniAPI.GetValueWithTitleAndKey("PATH", "CapPicPath");
-                ReadIniAPI.GetValueWithTitleAndKey("PATH", "VsClientPath");
-                ReadIniAPI.GetValueWithTitleAndKey("PATH", "HikSDKPath");
+                //加载读取配置文件的api
+                if (ReadIniAPI.LoadReadIniAPI(_sReadIniDllPath))
+                {
+                    ReadIniAPI.StartUp(_sReadIniFilePath, m_funcReadIniMsg);
+                    //读取配置文件 并存储起来
+                    ReadIniAPI.GetValueWithTitleAndKey("PATH", "CapPicPath");
+                    ReadIniAPI.GetValueWithTitleAndKey("PATH", "VsClientPath");
+                    ReadIniAPI.GetValueWithTitleAndKey("PATH", "HikSDKPath");
+                }
+                else
+                {
+                    MessageBox.Show("加载ReadIni未成功");
+                }
+                //加载海康api库
+                if (CHCNetSDK.NET_DVR_Init())
+                {
+                    m_bIsInitHikSucc = true;
+                    CHCNetSDK.NET_DVR_SetDVRMessageCallBack_V31(m_MsgCallbackHik, IntPtr.Zero);
+                }
             }
-            else
-            {
-                MessageBox.Show("加载ReadIni未成功");
-            }
-            //加载海康api库
-            if (CHCNetSDK.NET_DVR_Init())
-            {
-                CHCNetSDK.NET_DVR_SetDVRMessageCallBack_V31(m_MsgCallbackHik, IntPtr.Zero);
-            }
-
         }
         /// <summary>
         /// 连接视频
@@ -576,7 +586,10 @@ namespace CentralEcoCity.Video
         /// </summary>
         public void DelVideoAx()
         {
-            VsClientAPI.VSSP_ClientCleanup();
+            m_bIsInitHikSucc = false;
+            m_bIsInitSelfSucc = false;
+            bool bHikIsSucc = CHCNetSDK.NET_DVR_Cleanup();
+            Int32 iIsSucc = VsClientAPI.VSSP_ClientCleanup();
         }
 
         #endregion

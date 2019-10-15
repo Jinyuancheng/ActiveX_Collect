@@ -88,7 +88,7 @@ namespace BethVideo
             m_fmFullScreen.Height = Screen.PrimaryScreen.Bounds.Height;
             m_fmFullScreen.Visible = true;
             m_fmFullScreen.ConnectVideo(m_lLoginHandle, m_arrVideos[iTag].GetLinkChannel(), m_iType,
-                m_arrVideos[iTag].m_strCamId, m_arrVideos[iTag].m_strSvrIp, m_arrVideos[iTag].m_strName);
+                m_arrVideos[iTag].m_strCamId, m_arrVideos[iTag].m_strSvrIp, m_arrVideos[iTag].m_strName, iTag);
             setActiveWin(iTag);
         }
         //设置窗口为活动窗口
@@ -133,17 +133,31 @@ namespace BethVideo
             switch (iType)
             {
                 case 1://自己api
-                    m_arrVideos[0].ConnectVideoSelf(sId, sIp, sCamName);
-                    m_arrVideos[0].ShowVideoCamNameSelf(true);
-                    m_arrVideos[0].SetCamType(iType);
-                    setActiveWin(0);
+                    switch (iCamType)
+                    {
+                        case 1://红外摄像机 两个窗口
+                            m_arrVideos[0].ConnectVideoSelf(sId, sIp, sCamName, 0);
+                            m_arrVideos[0].ShowVideoCamNameSelf(true);
+                            m_arrVideos[0].SetCamType(iType);
+                            m_arrVideos[1].ConnectVideoSelf(sId, sIp, sCamName, 1);
+                            m_arrVideos[1].ShowVideoCamNameSelf(true);
+                            m_arrVideos[1].SetCamType(iType);
+                            setActiveWin(0);
+                            break;
+                        default:
+                            m_arrVideos[0].ConnectVideoSelf(sId, sIp, sCamName, 0);
+                            m_arrVideos[0].ShowVideoCamNameSelf(true);
+                            m_arrVideos[0].SetCamType(iType);
+                            setActiveWin(0);
+                            break;
+                    }
                     break;
                 case 2://海康api
                     if (iHandle < 0)
                     {
                         return;
                     }
-                    switch(iCamType)
+                    switch (iCamType)
                     {
                         case 1://红外摄像机
                             m_lLoginHandle = iHandle;

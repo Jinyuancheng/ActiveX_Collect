@@ -375,7 +375,7 @@ namespace ReplayAx.Video
         /// <param name="_sCapPath">抓拍图片存储路径</param>
         public void CaptureJpegHik()
         {
-            string sHikCapPath = m_CapPath + "\\" + DateTime.Now.ToString("yyyyMMdd") + "\\";
+            string sHikCapPath = m_CapPath + DateTime.Now.ToString("yyyyMMdd") + "\\";
             FuncCommon.CreateMultiDir(sHikCapPath);
             if (m_iPlayHandle != -1)
             {

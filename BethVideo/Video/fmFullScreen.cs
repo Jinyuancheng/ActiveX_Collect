@@ -32,13 +32,13 @@ namespace BethVideo
         }
 
         //连接视频
-        public void ConnectVideo(Int32 lLoginHandle, int iChNo, int iType, string sId, string sIp, string sName)
+        public void ConnectVideo(Int32 lLoginHandle, int iChNo, int iType, string sId, string sIp, string sName, int iSelfChnnel)
         {
             m_iType = iType;
             switch (m_iType)
             {
                 case 1://自己api
-                    ConnectVideoSelf(sId, sIp, sName);
+                    ConnectVideoSelf(sId, sIp, sName, iSelfChnnel);
                     break;
                 case 2://海康api
                     IntPtr pUser = new IntPtr();
@@ -76,7 +76,7 @@ namespace BethVideo
         }
 
         #region 自己api的 连接/关闭 视频事件
-        private DefVsClient.CHANNEL_CONINFOR GetChConInfor()
+        private DefVsClient.CHANNEL_CONINFOR GetChConInfor(int iChannel)
         {
             DefVsClient.CHANNEL_CONINFOR sChConInfor = new DefVsClient.CHANNEL_CONINFOR();
             sChConInfor.m_sNetLinkInfo.m_pchFromID = Encoding.Default.GetBytes("900000002001");
@@ -102,7 +102,7 @@ namespace BethVideo
             sChConInfor.m_sNetLinkInfo.m_iPort = 3000;
             sChConInfor.m_iType = 0x0201018;
             sChConInfor.m_hVideo = panelFull.Handle;
-            sChConInfor.m_iChNo = 0;
+            sChConInfor.m_iChNo = iChannel;
             sChConInfor.m_iStreamType = 0;
             sChConInfor.m_iBuffNum = 50;
             return sChConInfor;
@@ -113,12 +113,12 @@ namespace BethVideo
         /// <param name="strId">登录摄像机id</param>
         /// <param name="strIp">登录摄像机ip</param>
         /// <param name="strName">登录摄像机名称</param>
-        public void ConnectVideoSelf(string strId, string strIp, string strName)
+        public void ConnectVideoSelf(string strId, string strIp, string strName, int iChannel)
         {
             m_strName = strName;
             m_strCamId = strId;
             m_strSvrIp = strIp;
-            DefVsClient.CHANNEL_CONINFOR sChConInfor = GetChConInfor();
+            DefVsClient.CHANNEL_CONINFOR sChConInfor = GetChConInfor(iChannel);
             m_lPlayHandle = VsClientAPI.VSSP_ClientStart(ref sChConInfor);
             if (m_lPlayHandle >= 0)
             {

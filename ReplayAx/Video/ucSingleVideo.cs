@@ -503,10 +503,10 @@ namespace ReplayAx.Video
                         m_fmFullScreen.Visible = true;
                         m_fmFullScreen.StartPlayHik(m_iLoginHandle, m_sStartTime, m_sEndTime,
                             m_iChannel, m_iCamType);
-                        //string sPlayTime = Convert.ToString(Convert.ToUInt64(m_sStartTime) + (Convert.ToUInt64(GetCurrentPlayTime())));
-                        //CHCNetSDK.NET_DVR_TIME oPlayTime = GetTimeObjectHik(sPlayTime);
-                        //Thread.Sleep(1000);
-                        //m_fmFullScreen.SetPlayPlanHik(oPlayTime);
+                        string sPlayTime = Convert.ToString(Convert.ToUInt64(m_sStartTime) + (Convert.ToUInt64(GetCurrentPlayTime()) + 8));
+                        CHCNetSDK.NET_DVR_TIME oPlayTime = GetTimeObjectHik(sPlayTime);
+                        Thread.Sleep(1000);
+                        m_fmFullScreen.SetPlayPlanHik(oPlayTime);
                         break;
                 }
             }

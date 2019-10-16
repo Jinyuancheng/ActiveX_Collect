@@ -370,7 +370,7 @@ namespace ReplayAx.Video
         {
             if (OnRecvTempMsg != null)
             {
-                string sRetData = "{\"IsSucc\":\"Failed\"}";
+                string sRetData = "{\"tag\":\"IsSucc\",\"Result\":\"Failed\"}";
                 OnRecvTempMsg(sRetData);
             }
         }

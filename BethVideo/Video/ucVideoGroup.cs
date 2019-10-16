@@ -117,6 +117,14 @@ namespace BethVideo
             }
             return svideo;
         }
+        /*\ 判断视频是否存在 /*/
+        public void JuageVideoExit(ucSingleVideo video)
+        {
+            if(video.m_bConnected)
+            {
+                video.DisConnectVideo();
+            }
+        }
         /// <summary>
         /// 连接视频
         /// </summary>
@@ -135,7 +143,11 @@ namespace BethVideo
                 case 1://自己api
                     switch (iCamType)
                     {
-                        case 1://红外摄像机 两个窗口
+                        case 0://热成像摄像机 两个窗口
+                            for(int i = 0;i < 2;i++)
+                            {
+                                JuageVideoExit(m_arrVideos[i]);
+                            }
                             m_arrVideos[0].ConnectVideoSelf(sId, sIp, sCamName, 0);
                             m_arrVideos[0].ShowVideoCamNameSelf(true);
                             m_arrVideos[0].SetCamType(iType);
@@ -145,6 +157,10 @@ namespace BethVideo
                             setActiveWin(0);
                             break;
                         default:
+                            for (int i = 0; i < 2; i++)
+                            {
+                                JuageVideoExit(m_arrVideos[i]);
+                            }
                             m_arrVideos[0].ConnectVideoSelf(sId, sIp, sCamName, 0);
                             m_arrVideos[0].ShowVideoCamNameSelf(true);
                             m_arrVideos[0].SetCamType(iType);
@@ -159,7 +175,7 @@ namespace BethVideo
                     }
                     switch (iCamType)
                     {
-                        case 1://红外摄像机
+                        case 0://热成像摄像机
                             m_lLoginHandle = iHandle;
                             m_arrVideos[0].ConnectVideo(m_lLoginHandle, iChannel);
                             m_arrVideos[0].ShowVideoCaption(true);

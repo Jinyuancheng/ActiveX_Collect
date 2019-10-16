@@ -568,5 +568,9 @@ namespace CentralEcoCity.Video
         }
         #endregion
 
+        private void UcVGSHow_Load(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

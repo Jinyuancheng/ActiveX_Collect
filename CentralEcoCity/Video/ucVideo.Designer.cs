@@ -38,6 +38,7 @@
             this.ucVGSHow.Name = "ucVGSHow";
             this.ucVGSHow.Size = new System.Drawing.Size(905, 545);
             this.ucVGSHow.TabIndex = 0;
+            this.ucVGSHow.Load += new System.EventHandler(this.UcVGSHow_Load);
             // 
             // ucVideo
             // 

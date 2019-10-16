@@ -475,7 +475,8 @@ namespace BethVideo
                                 if (m_lstLoginInfo[i].iHandle >= 0)
                                 {
                                     CSaveHikChannelInfo oSaveHikChannelInfo = new CSaveHikChannelInfo();
-                                    oSaveHikChannelInfo.m_lstHikChannelInfo = new List<NET_DVR_IPPARACFG_V40>();                                    oSaveHikChannelInfo.m_sStreamIp = m_lstLoginInfo[i].sStreamIp;
+                                    oSaveHikChannelInfo.m_lstHikChannelInfo = new List<NET_DVR_IPPARACFG_V40>();
+                                    oSaveHikChannelInfo.m_sStreamIp = m_lstLoginInfo[i].sStreamIp;
                                     NET_DVR_IPPARACFG_V40 oIpParaCfgV40 = new NET_DVR_IPPARACFG_V40();
                                     uint dwSize = (uint)Marshal.SizeOf(oIpParaCfgV40);
                                     IntPtr ptrIpParaCfgV40 = Marshal.AllocHGlobal((Int32)dwSize);

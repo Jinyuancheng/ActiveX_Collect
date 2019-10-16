@@ -50,7 +50,7 @@ namespace CentralEcoCity.Video
         private string m_sHCNetSDKPath; //HCNetSDK.dll的路径
         private bool m_bTerminated = false;//用来判断是否结束
         //获取流媒体服务器的通道号
-        public List<CHCNetSDK.NET_DVR_IPPARACFG_V40> m_lstStruIpParaCfgV40;
+        public List<CSaveHikChannelInfo> m_lstSaveHikChannelInfo;
         #endregion
 
 
@@ -69,8 +69,7 @@ namespace CentralEcoCity.Video
             m_sVsClientPath = "";
             m_sHCNetSDKPath = "";
 
-
-            m_lstStruIpParaCfgV40 = new List<NET_DVR_IPPARACFG_V40>();
+            m_lstSaveHikChannelInfo = new List<CSaveHikChannelInfo>();
         }
         /*******************************************************/
         #region IObjectSafety 接口成员实现ActiveX（直接拷贝即可）
@@ -257,13 +256,15 @@ namespace CentralEcoCity.Video
                                 //将通道信息和对应的ip存储到list集合中
                                 if (m_lstLoginInfo[i].iHandle >= 0)
                                 {
+                                    CSaveHikChannelInfo oSaveHikChannelInfo = new CSaveHikChannelInfo();
+                                    oSaveHikChannelInfo.m_lstHikChannelInfo = new List<NET_DVR_IPPARACFG_V40>(); oSaveHikChannelInfo.m_sStreamIp = m_lstLoginInfo[i].sStreamIp;
                                     NET_DVR_IPPARACFG_V40 oIpParaCfgV40 = new NET_DVR_IPPARACFG_V40();
                                     uint dwSize = (uint)Marshal.SizeOf(oIpParaCfgV40);
                                     IntPtr ptrIpParaCfgV40 = Marshal.AllocHGlobal((Int32)dwSize);
                                     Marshal.StructureToPtr(oIpParaCfgV40, ptrIpParaCfgV40, false);
                                     uint dwReturn = 0;
                                     //int iGroupNo = 0; //该Demo仅获取第一组64个通道，如果设备IP通道大于64路，需要按组号0~i多次调用NET_DVR_GET_IPPARACFG_V40获取
-                                    /*\ 共16组 /*/
+                                    /*\ 共16组每组64个 /*/
                                     for (int iGroupNo = 0; iGroupNo < 15; iGroupNo++)
                                     {
                                         if (CHCNetSDK.NET_DVR_GetDVRConfig(m_lstLoginInfo[i].iHandle, CHCNetSDK.NET_DVR_GET_IPPARACFG_V40, iGroupNo, ptrIpParaCfgV40, dwSize, ref dwReturn))
@@ -271,10 +272,12 @@ namespace CentralEcoCity.Video
                                             lock (m_oSingleLock)
                                             {
                                                 oIpParaCfgV40 = (CHCNetSDK.NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ptrIpParaCfgV40, typeof(CHCNetSDK.NET_DVR_IPPARACFG_V40));
-                                                m_lstStruIpParaCfgV40.Add(oIpParaCfgV40);
+                                                oSaveHikChannelInfo.m_lstHikChannelInfo.Add(oIpParaCfgV40);
+                                                m_lstSaveHikChannelInfo.Add(oSaveHikChannelInfo);
                                             }
                                         }
                                     }
+                                    Marshal.FreeHGlobal(ptrIpParaCfgV40);
                                 }
                             }
                         }

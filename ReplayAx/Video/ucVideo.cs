@@ -483,7 +483,7 @@ namespace ReplayAx.Video
                     {
                         for (int i = 0; i < m_lstLoginInfo.Count; i++)
                         {
-                            if (m_lstLoginInfo[i].iHandle != -1 && m_lstLoginInfo[i].sIp == _pchUrl)
+                            if (m_lstLoginInfo[i].iHandle != -1 && m_lstLoginInfo[i].sStreamIp == _sStreamIp)
                             {
                                 //设置设备类型
                                 ucSVideo.SetCamType(m_iCamType);

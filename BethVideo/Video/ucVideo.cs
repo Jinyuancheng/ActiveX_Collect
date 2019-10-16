@@ -146,7 +146,7 @@ namespace BethVideo
         //用于海康摄像机播放视频
         private List<CLoginInfo> m_lstLoginInfo;   //用来存储登录信息
         //获取流媒体服务器的通道号
-        public List<CHCNetSDK.NET_DVR_IPPARACFG_V40> m_lstStruIpParaCfgV40;
+        public List<CSaveHikChannelInfo> m_lstSaveHikChannelInfo;
         public ucVideo()
         {
             InitializeComponent();
@@ -184,7 +184,7 @@ namespace BethVideo
             m_sVsClientPath = "";
             m_sHCNetSDKPath = "";
             m_lstLoginInfo = new List<CLoginInfo>();
-            m_lstStruIpParaCfgV40 = new List<NET_DVR_IPPARACFG_V40>();
+            m_lstSaveHikChannelInfo = new List<CSaveHikChannelInfo>();
         }
         #endregion
 
@@ -474,6 +474,8 @@ namespace BethVideo
                                 }
                                 if (m_lstLoginInfo[i].iHandle >= 0)
                                 {
+                                    CSaveHikChannelInfo oSaveHikChannelInfo = new CSaveHikChannelInfo();
+                                    oSaveHikChannelInfo.m_lstHikChannelInfo = new List<NET_DVR_IPPARACFG_V40>();                                    oSaveHikChannelInfo.m_sStreamIp = m_lstLoginInfo[i].sStreamIp;
                                     NET_DVR_IPPARACFG_V40 oIpParaCfgV40 = new NET_DVR_IPPARACFG_V40();
                                     uint dwSize = (uint)Marshal.SizeOf(oIpParaCfgV40);
                                     IntPtr ptrIpParaCfgV40 = Marshal.AllocHGlobal((Int32)dwSize);
@@ -485,13 +487,15 @@ namespace BethVideo
                                     {
                                         if (CHCNetSDK.NET_DVR_GetDVRConfig(m_lstLoginInfo[i].iHandle, CHCNetSDK.NET_DVR_GET_IPPARACFG_V40, iGroupNo, ptrIpParaCfgV40, dwSize, ref dwReturn))
                                         {
-                                            lock(m_singleLock)
+                                            lock (m_singleLock)
                                             {
                                                 oIpParaCfgV40 = (CHCNetSDK.NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ptrIpParaCfgV40, typeof(CHCNetSDK.NET_DVR_IPPARACFG_V40));
-                                                m_lstStruIpParaCfgV40.Add(oIpParaCfgV40);
+                                                oSaveHikChannelInfo.m_lstHikChannelInfo.Add(oIpParaCfgV40);
+                                                m_lstSaveHikChannelInfo.Add(oSaveHikChannelInfo);
                                             }
                                         }
                                     }
+                                    Marshal.FreeHGlobal(ptrIpParaCfgV40);
                                 }
                             }
                         }
@@ -509,77 +513,29 @@ namespace BethVideo
             }
         }
         /// <summary>
-        /// 海康主机登录(未使用)
-        /// </summary>
-        private void HikHostLogin()
-        {
-            if(m_lstLoginInfo.Count > 0)
-            {
-                for (int i = 0; i < m_lstLoginInfo.Count; i++)
-                {
-                    if (m_lstLoginInfo[i].iHandle == -1)
-                    {
-                        NET_DVR_USER_LOGIN_INFO struLoginInfo = new NET_DVR_USER_LOGIN_INFO();
-                        NET_DVR_DEVICEINFO_V40 devInfor = new NET_DVR_DEVICEINFO_V40();
-                        devInfor.byRes2 = new byte[246];
-                        devInfor.struDeviceV30.sSerialNumber = new byte[48];
-                        devInfor.byRes2 = new byte[246];
-                        devInfor.struDeviceV30.sSerialNumber = new byte[48];
-                        struLoginInfo.sDeviceAddress = m_lstLoginInfo[i].sStreamIp;
-                        struLoginInfo.wPort = Convert.ToUInt16(m_lstLoginInfo[i].sPort); //设备服务端口
-                        struLoginInfo.sUserName = m_lstLoginInfo[i].sUser; //设备登录用户名
-                        struLoginInfo.sPassword = m_lstLoginInfo[i].sPass; //设备登录密码
-                        struLoginInfo.bUseAsynLogin = false; //同步登录方式（异步现在设备不在线时会报错，不知道啥原因）
-                        struLoginInfo.byLoginMode = 0;
-                        struLoginInfo.byHttps = 2;
-                        //m_lstLoginInfo[i].iHandle = HikVideoAPI.NET_HIK_Login_V40(ref struLoginInfo, ref devInfor);
-                        m_lstLoginInfo[i].iHandle = CHCNetSDK.NET_DVR_Login_V40(ref struLoginInfo, ref devInfor);
-                        //失败
-                        if (m_lstLoginInfo[i].iHandle < 0)
-                        {
-                            CHCNetSDK.NET_DVR_Logout(m_lstLoginInfo[i].iHandle);
-                            CHCNetSDK.NET_DVR_Cleanup();
-                            return;
-                        }
-                        if (m_lstLoginInfo[i].iHandle >= 0)
-                        {
-                           
-                            NET_DVR_IPPARACFG_V40 oIpParaCfgV40 = new NET_DVR_IPPARACFG_V40();
-                            uint dwSize = (uint)Marshal.SizeOf(oIpParaCfgV40);
-                            IntPtr ptrIpParaCfgV40 = Marshal.AllocHGlobal((Int32)dwSize);
-                            Marshal.StructureToPtr(oIpParaCfgV40, ptrIpParaCfgV40, false);
-                            uint dwReturn = 0;
-                            //int iGroupNo = 0; //该Demo仅获取第一组64个通道，如果设备IP通道大于64路，需要按组号0~i多次调用NET_DVR_GET_IPPARACFG_V40获取
-                            for (int iGroupNo = 0; iGroupNo < 4; iGroupNo++)
-                            {
-                                if (CHCNetSDK.NET_DVR_GetDVRConfig(m_lstLoginInfo[i].iHandle, CHCNetSDK.NET_DVR_GET_IPPARACFG_V40, iGroupNo, ptrIpParaCfgV40, dwSize, ref dwReturn))
-                                {
-                                    oIpParaCfgV40 = (CHCNetSDK.NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ptrIpParaCfgV40, typeof(CHCNetSDK.NET_DVR_IPPARACFG_V40));
-                                    m_lstStruIpParaCfgV40.Add(oIpParaCfgV40);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        /// <summary>
         /// 根据ip计算通道号
         /// </summary>
-        /// <param name="_sIp"></param>
-        private int ComputeChannel(string _sIp)
+        /// <param name="_sIp">摄像机ip</param>
+        /// <param name="sStreamIp">流媒体服务器ip</param>
+        private int ComputeChannel(string _sIp, string sStreamIp)
         {
             int iChannel = -1;
-            if (m_lstStruIpParaCfgV40.Count > 0)
+            if (m_lstSaveHikChannelInfo.Count > 0)
             {
-                for (int i = 0; i < m_lstStruIpParaCfgV40.Count; i++)
+                for (int i = 0; i < m_lstSaveHikChannelInfo.Count; i++)
                 {
-                    for (int j = 0; j < m_lstStruIpParaCfgV40[i].struIPDevInfo.Length; j++)
+                    if (m_lstSaveHikChannelInfo[i].m_sStreamIp == sStreamIp)
                     {
-                        if (_sIp == m_lstStruIpParaCfgV40[i].struIPDevInfo[j].struIP.sIpV4)
+                        for (int j = 0; j < m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo.Count; j++)
                         {
-                            iChannel = j + 1;
-                            break;
+                            for (int z = 0; z < m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struIPDevInfo.Length; z++)
+                            {
+                                if (_sIp == m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struIPDevInfo[z].struIP.sIpV4)
+                                {
+                                    iChannel = z + 1;
+                                    return iChannel;
+                                }
+                            }
                         }
                     }
                 }
@@ -885,34 +841,36 @@ namespace BethVideo
         ///连接视频
         /// </summary>
         /// <param name="strIp">摄像机Ip</param>
-        /// <param name="strStream">流媒体Ip</param>
+        /// <param name="strStreamIp">流媒体Ip</param>
         /// <param name="strId">摄像机id</param>
         /// <param name="strType">摄像机类型 1.自己api 2.海康api</param>
         /// <param name="strName">摄像机名称</param>
         /// <param name="strCamType">摄像机类型</param>
-        public void ConnectVideo(string strIp, string strStream, string strId,
+        public void ConnectVideo(string strIp, string strStreamIp, string strId,
             string strType, string strName, string strCamType)
         {
             int iType = Convert.ToInt32(strType);
-            int iChannel = ComputeChannel(strIp);
+            int iChannel = ComputeChannel(strIp, strStreamIp);
             int iCamType = Convert.ToInt32(strCamType);
             switch (iType)
             {
                 case 1://自己api
-                    ucVideoMain.ConnectVideo(iType, strId, strStream, strName, iChannel, iCamType);
+                    ucVideoMain.ConnectVideo(iType, strId, strStreamIp, strName, iChannel, iCamType);
                     break;
                 case 2://海康api
-                    foreach (CLoginInfo item in m_lstLoginInfo)
+                    if(m_lstLoginInfo.Count > 0)
                     {
-                        if (item.sStreamIp == strStream && item.iHandle >= 0)
+                        for(int i = 0;i < m_lstLoginInfo.Count;i++)
                         {
-                            ucVideoMain.ConnectVideo(iType, strId, strIp, strName, iChannel, iCamType, item.iHandle);
-                            break;
+                            if(m_lstLoginInfo[i].sStreamIp == strStreamIp && m_lstLoginInfo[i].iHandle != -1)
+                            {
+                                ucVideoMain.ConnectVideo(iType, strId, strIp, strName, iChannel, iCamType, m_lstLoginInfo[i].iHandle);
+                            }
                         }
+
                     }
                     break;
             }
-
         }
         //断开视频
         public void DisAllConnectVideo()

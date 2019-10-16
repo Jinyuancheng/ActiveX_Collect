@@ -319,7 +319,7 @@ namespace CentralEcoCity.Video
                             if (m_lstLoginInfo[i].iHandle != -1 &&
                                 m_lstLoginInfo[i].sIp == EpollArray[j]["sStreamIp"].ToString())
                             {
-                                ucVGSHow.ConnectVideo(EpollArray[j]["lId"].ToString(), m_lstLoginInfo[i].sIp,
+                                ucVGSHow.ConnectVideo(EpollArray[j]["lId"].ToString(), EpollArray[j]["sIp"].ToString(),
                                     EpollArray[j]["sCamName"].ToString(), iType, iChannel, m_lstLoginInfo[i].iHandle);
                                 break;
                             }
@@ -518,7 +518,7 @@ namespace CentralEcoCity.Video
                                 if (m_lstLoginInfo[i].iHandle != -1 &&
                                     m_lstLoginInfo[i].sIp == EpollArray[0]["sStreamIp"].ToString())
                                 {
-                                    ucVGSHow.ConnectVideo(EpollArray[0]["lId"].ToString(), m_lstLoginInfo[i].sIp,
+                                    ucVGSHow.ConnectVideo(EpollArray[0]["lId"].ToString(), EpollArray[0]["sIp"].ToString(),
                                         EpollArray[0]["sCamName"].ToString(), iType, iChannel, m_lstLoginInfo[0].iHandle);
                                 }
                             }

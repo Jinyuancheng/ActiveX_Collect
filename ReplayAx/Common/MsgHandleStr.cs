@@ -3,9 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using static PreviewDemo.CHCNetSDK;
 
 namespace BethVideo
 {
+    /*\ 存储海康通道信息 /*/
+    public struct CSaveHikChannelInfo
+    {
+        public string m_sStreamIp;  /*\ 流媒体服务器ip(海康) /*/
+        public List<NET_DVR_IPPARACFG_V40> m_lstHikChannelInfo;/*\ 存储该服务器中存储的通道信息 /*/
+    }
     /// <summary>
     /// 模拟量上传的结构体（得到实时模拟量数据的结构体）
     /// </summary>

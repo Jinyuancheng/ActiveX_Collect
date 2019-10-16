@@ -63,7 +63,8 @@ namespace ReplayAx.Video
         private bool m_bTerminated = false;/*\ 判断是否结束 /*/
 
         private bool m_bIsFirstFloder;  //是否是第一次文件夹（配置文件中没有抓拍文件的路径）
-        private List<NET_DVR_IPPARACFG_V40> m_lstStruIpParaCfgV40;//用来存储计算通道号的信息数据
+        //获取流媒体服务器的通道号
+        public List<CSaveHikChannelInfo> m_lstSaveHikChannelInfo;
         //事件
         public event RecvTempMsgHandler OnRecvTempMsg;//用来给js回调数据
         public ucVideo()
@@ -176,7 +177,7 @@ namespace ReplayAx.Video
             m_iCamType = -1;
             m_sCapPath = "";
             m_bIsFirstFloder = false;
-            m_lstStruIpParaCfgV40 = new List<NET_DVR_IPPARACFG_V40>();
+            m_lstSaveHikChannelInfo = new List<CSaveHikChannelInfo>();
         }
 
         #region [回调函数] 回调函数
@@ -253,16 +254,16 @@ namespace ReplayAx.Video
             //string file = "G:\\天津白泽技术有限公司项目\\天津白泽技术项目源文件等\\CentralEcoCity\\bin\\HCNetSDK.dll";
             //InitHikVideoSDK(m_iHCNetDllPath);
             int iDelay = 0;/*\ 延迟 /*/
-            while(!m_bTerminated)
+            while (!m_bTerminated)
             {
-                if(m_lstLoginInfo.Count == 0)
+                if (m_lstLoginInfo.Count == 0)
                 {
                     Thread.Sleep(1000);
                 }
                 else
                 {
                     iDelay = 0;
-                    if(m_lstLoginInfo.Count > 0)
+                    if (m_lstLoginInfo.Count > 0)
                     {
                         for (int i = 0; i < m_lstLoginInfo.Count; i++)
                         {
@@ -286,25 +287,29 @@ namespace ReplayAx.Video
                                 //失败
                                 if (m_lstLoginInfo[i].iHandle >= 0)
                                 {
-                                    //存储数据用来计算通道号
+                                    CSaveHikChannelInfo oSaveHikChannelInfo = new CSaveHikChannelInfo();
+                                    oSaveHikChannelInfo.m_lstHikChannelInfo = new List<NET_DVR_IPPARACFG_V40>();
+                                    oSaveHikChannelInfo.m_sStreamIp = m_lstLoginInfo[i].sStreamIp;
                                     NET_DVR_IPPARACFG_V40 oIpParaCfgV40 = new NET_DVR_IPPARACFG_V40();
                                     uint dwSize = (uint)Marshal.SizeOf(oIpParaCfgV40);
                                     IntPtr ptrIpParaCfgV40 = Marshal.AllocHGlobal((Int32)dwSize);
                                     Marshal.StructureToPtr(oIpParaCfgV40, ptrIpParaCfgV40, false);
                                     uint dwReturn = 0;
                                     //int iGroupNo = 0; //该Demo仅获取第一组64个通道，如果设备IP通道大于64路，需要按组号0~i多次调用NET_DVR_GET_IPPARACFG_V40获取
-                                    /*\ 一共16组，每组64个，共1024个 /*/
+                                    /*\ 共16组每组64个 /*/
                                     for (int iGroupNo = 0; iGroupNo < 15; iGroupNo++)
                                     {
                                         if (CHCNetSDK.NET_DVR_GetDVRConfig(m_lstLoginInfo[i].iHandle, CHCNetSDK.NET_DVR_GET_IPPARACFG_V40, iGroupNo, ptrIpParaCfgV40, dwSize, ref dwReturn))
                                         {
-                                            lock(m_oSingleLock)
+                                            lock (m_oSingleLock)
                                             {
                                                 oIpParaCfgV40 = (CHCNetSDK.NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ptrIpParaCfgV40, typeof(CHCNetSDK.NET_DVR_IPPARACFG_V40));
-                                                m_lstStruIpParaCfgV40.Add(oIpParaCfgV40);
+                                                oSaveHikChannelInfo.m_lstHikChannelInfo.Add(oIpParaCfgV40);
+                                                m_lstSaveHikChannelInfo.Add(oSaveHikChannelInfo);
                                             }
                                         }
                                     }
+                                    Marshal.FreeHGlobal(ptrIpParaCfgV40);
                                 }
                             }
 
@@ -322,82 +327,31 @@ namespace ReplayAx.Video
                 }
             }
         }
-        /// <summary>
-        /// 海康主机登录（未使用）
-        /// </summary>
-        public void HikHostLogin()
-        {
-            if (m_lstLoginInfo.Count > 0)
-            {
-                for (int i = 0; i < m_lstLoginInfo.Count; i++)
-                {
-                    if (m_lstLoginInfo[i].iHandle == -1)
-                    {
-                        NET_DVR_USER_LOGIN_INFO struLoginInfo = new NET_DVR_USER_LOGIN_INFO();
-                        NET_DVR_DEVICEINFO_V40 devInfor = new NET_DVR_DEVICEINFO_V40();
-                        devInfor.byRes2 = new byte[246];
-                        devInfor.struDeviceV30.sSerialNumber = new byte[48];
-                        devInfor.byRes2 = new byte[246];
-                        devInfor.struDeviceV30.sSerialNumber = new byte[48];
-                        struLoginInfo.sDeviceAddress = m_lstLoginInfo[i].sStreamIp;
-                        struLoginInfo.wPort = Convert.ToUInt16(m_lstLoginInfo[i].sPort); //设备服务端口
-                        struLoginInfo.sUserName = m_lstLoginInfo[i].sUser; //设备登录用户名
-                        struLoginInfo.sPassword = m_lstLoginInfo[i].sPass; //设备登录密码
-                        struLoginInfo.bUseAsynLogin = false; //同步登录方式（异步现在设备不在线时会报错，不知道啥原因）
-                        struLoginInfo.byLoginMode = 0;
-                        struLoginInfo.byHttps = 2;
-                        //m_lstLoginInfo[i].iHandle = HikVideoAPI.NET_HIK_Login_V40(ref struLoginInfo, ref devInfor);
-                        m_lstLoginInfo[i].iHandle = CHCNetSDK.NET_DVR_Login_V40(ref struLoginInfo, ref devInfor);
-                        //失败
-                        if (m_lstLoginInfo[i].iHandle < 0)
-                        {
-                            CHCNetSDK.NET_DVR_Logout(m_lstLoginInfo[i].iHandle);
-                            return;
-                        }
-                        else
-                        {
-                            //存储数据用来计算通道号
-                            NET_DVR_IPPARACFG_V40 oIpParaCfgV40 = new NET_DVR_IPPARACFG_V40();
-                            uint dwSize = (uint)Marshal.SizeOf(oIpParaCfgV40);
-                            IntPtr ptrIpParaCfgV40 = Marshal.AllocHGlobal((Int32)dwSize);
-                            Marshal.StructureToPtr(oIpParaCfgV40, ptrIpParaCfgV40, false);
-                            uint dwReturn = 0;
-                            //int iGroupNo = 0; //该Demo仅获取第一组64个通道，如果设备IP通道大于64路，需要按组号0~i多次调用NET_DVR_GET_IPPARACFG_V40获取
-                            for (int iGroupNo = 0; iGroupNo < 4; iGroupNo++)
-                            {
-                                if (CHCNetSDK.NET_DVR_GetDVRConfig(m_lstLoginInfo[i].iHandle, CHCNetSDK.NET_DVR_GET_IPPARACFG_V40, iGroupNo, ptrIpParaCfgV40, dwSize, ref dwReturn))
-                                {
-                                    oIpParaCfgV40 = (CHCNetSDK.NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ptrIpParaCfgV40, typeof(CHCNetSDK.NET_DVR_IPPARACFG_V40));
-                                    m_lstStruIpParaCfgV40.Add(oIpParaCfgV40);
-                                }
-                            }
-                        }
-                        //第二种登录
-                        //CHCNetSDK.NET_DVR_DEVICEINFO_V30 DeviceInfo = new CHCNetSDK.NET_DVR_DEVICEINFO_V30();
-                        //m_lstLoginInfo[i].iHandle = CHCNetSDK.NET_DVR_Login_V30(m_lstLoginInfo[i].sIp, Convert.ToInt32(m_lstLoginInfo[i].sPort),
-                        //    m_lstLoginInfo[i].sUser, m_lstLoginInfo[i].sPass, ref DeviceInfo);
-                    }
-                }
-            }
-        }
 
         /// <summary>
         /// 根据ip返回通道号(海康摄像机)
         /// </summary>
-        /// <param name="_sIp">ip</param>
-        private int RetChannelWithIpHik(string _sIp)
+        /// <param name="_sIp">摄像机ip</param>
+        /// <param name="sStreamIp">流媒体ip</param>
+        private int RetChannelWithIpHik(string _sIp, string sStreamIp)
         {
             int iChannel = -1;
-            if (m_lstStruIpParaCfgV40.Count > 0)
+            if (m_lstSaveHikChannelInfo.Count > 0)
             {
-                for (int i = 0; i < m_lstStruIpParaCfgV40.Count; i++)
+                for (int i = 0; i < m_lstSaveHikChannelInfo.Count; i++)
                 {
-                    for (int j = 0; j < m_lstStruIpParaCfgV40[i].struIPDevInfo.Length; j++)
+                    if (m_lstSaveHikChannelInfo[i].m_sStreamIp == sStreamIp)
                     {
-                        if (_sIp == m_lstStruIpParaCfgV40[i].struIPDevInfo[j].struIP.sIpV4)
+                        for (int j = 0; j < m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo.Count; j++)
                         {
-                            iChannel = j + 1;
-                            break;
+                            for (int z = 0; z < m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struIPDevInfo.Length; z++)
+                            {
+                                if (_sIp == m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struIPDevInfo[z].struIP.sIpV4)
+                                {
+                                    iChannel = z + 1;
+                                    return iChannel;
+                                }
+                            }
                         }
                     }
                 }
@@ -500,7 +454,7 @@ namespace ReplayAx.Video
         /// <param name="_playTime">播放时间</param>
         /// <param name="_pchCamId">摄像机id</param>
         /// <param name="_sType">摄像机类型 1,自己的api 2.海康的api</param>
-        public void StartPlay(string _pchUrl, string _startTime, string _endTime,
+        public void StartPlay(string _pchUrl, string _sStreamIp, string _startTime, string _endTime,
             string _playTime, string _pchCamId, string _sType)
         {
             m_sCamId = _pchCamId;
@@ -508,7 +462,7 @@ namespace ReplayAx.Video
             m_sEndTime = _endTime;
             m_sPalyTime = _playTime;
             m_sUrl = _pchUrl;
-            m_iChannel = RetChannelWithIpHik(_pchUrl);
+            m_iChannel = RetChannelWithIpHik(_pchUrl,_sStreamIp);
             m_iCamType = Convert.ToInt32(_sType);
             //调用api的类型
             switch (m_iCamType)

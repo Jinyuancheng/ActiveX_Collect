@@ -484,7 +484,7 @@ namespace CentralEcoCity.Video
         /// </summary>
         /// <param name="iScreen"></param>
         public void ChangeScreen(int iScreen)
-        {
+        { 
             ucVGSHow.ChangeScreens(iScreen);
         }
         /// <summary>
@@ -550,23 +550,23 @@ namespace CentralEcoCity.Video
         {
             m_bIsInitHikSucc = false;
             m_bIsInitSelfSucc = false;
-            ucVGSHow.DisConnectVideoAll();
-            for (int i = 0; i < m_lstLoginInfo.Count; i++)
+            m_oThreadLogin.Abort();
+            if (m_lstLoginInfo.Count > 0)
             {
-                if (m_lstLoginInfo[i].iHandle != -1)
+                ucVGSHow.DisConnectVideoAll();
+                for (int i = 0; i < m_lstLoginInfo.Count; i++)
                 {
-                    CHCNetSDK.NET_DVR_Logout(m_lstLoginInfo[i].iHandle);
-                    m_lstLoginInfo.Clear();
+                    if (m_lstLoginInfo[i].iHandle != -1)
+                    {
+                        CHCNetSDK.NET_DVR_Logout(m_lstLoginInfo[i].iHandle);
+                    }
                 }
+                m_lstLoginInfo.Clear();
+                bool bHikIsSucc = CHCNetSDK.NET_DVR_Cleanup();
+                Int32 iIsSucc = VsClientAPI.VSSP_ClientCleanup();
             }
-            bool bHikIsSucc = CHCNetSDK.NET_DVR_Cleanup();
-            Int32 iIsSucc = VsClientAPI.VSSP_ClientCleanup();
         }
-
         #endregion
-
-
-
 
     }
 }

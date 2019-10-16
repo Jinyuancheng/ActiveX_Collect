@@ -464,6 +464,7 @@ namespace ReplayAx.Video
             uint pOutLeng = 0;
             CHCNetSDK.NET_DVR_PlayBackControl_V40(m_iPlayHandle, (uint)EHikControlInfo.NET_DVR_PLAYSETTIME,
                 pIn, pInLeng, IntPtr.Zero, ref pOutLeng);
+            Marshal.FreeHGlobal(pIn);
         }
         /// <summary>
         /// 得到回放录像osd时间

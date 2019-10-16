@@ -859,11 +859,11 @@ namespace BethVideo
                     ucVideoMain.ConnectVideo(iType, strId, strStreamIp, strName, iChannel, iCamType);
                     break;
                 case 2://海康api
-                    if(m_lstLoginInfo.Count > 0)
+                    if (m_lstLoginInfo.Count > 0)
                     {
-                        for(int i = 0;i < m_lstLoginInfo.Count;i++)
+                        for (int i = 0; i < m_lstLoginInfo.Count; i++)
                         {
-                            if(m_lstLoginInfo[i].sStreamIp == strStreamIp && m_lstLoginInfo[i].iHandle != -1)
+                            if (m_lstLoginInfo[i].sStreamIp == strStreamIp && m_lstLoginInfo[i].iHandle != -1)
                             {
                                 ucVideoMain.ConnectVideo(iType, strId, strIp, strName, iChannel, iCamType, m_lstLoginInfo[i].iHandle);
                             }
@@ -882,17 +882,22 @@ namespace BethVideo
         public void UnInitBethVideo()
         {
             tmrDealMsg.Enabled = false;
-            ucVideoMain.DisAllConnectVideo();
-            for (int i = 0; i < m_lstLoginInfor.Count; i++)
+            if (m_lstLoginInfo.Count > 0)
             {
-                if (m_lstLoginInfor[i].iHandle >= 0)
+                ucVideoMain.DisAllConnectVideo();
+                /*\ 关闭线程 /*/
+                m_threadLoginHost.Abort();
+                for (int i = 0; i < m_lstLoginInfo.Count; i++)
                 {
-                    CHCNetSDK.NET_DVR_Logout_V30(m_lstLoginInfor[i].iHandle);
+                    if (m_lstLoginInfo[i].iHandle >= 0)
+                    {
+                        CHCNetSDK.NET_DVR_Logout_V30(m_lstLoginInfo[i].iHandle);
+                    }
                 }
+                m_lstLoginInfo.Clear();
+                VsClientAPI.VSSP_ClientCleanup();
+                CHCNetSDK.NET_DVR_Cleanup();
             }
-            m_lstLoginInfo.Clear();
-            VsClientAPI.VSSP_ClientCleanup();
-            CHCNetSDK.NET_DVR_Cleanup();
         }
         #endregion
 

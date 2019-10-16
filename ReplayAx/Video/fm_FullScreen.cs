@@ -122,6 +122,7 @@ namespace CentralEcoCity.Video
                 CHCNetSDK.NET_DVR_PlayBackControl_V40(m_iHandle, (uint)EHikControlInfo.NET_DVR_PLAYSETTIME,
                     pIn, pInLeng, IntPtr.Zero, ref pOutLeng);
             }
+            Marshal.FreeHGlobal(pIn);
         }
 
         /// <summary>

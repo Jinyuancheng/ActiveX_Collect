@@ -787,19 +787,23 @@ namespace ReplayAx.Video
         /// </summary>
         public void DelVideoAx()
         {
-            ucSVideo.StopPlay();
-            for (int i = 0; i < m_lstLoginInfo.Count; i++)
+            if (m_lstLoginInfo.Count > 0)
             {
-                if (m_lstLoginInfo[i].iHandle != -1)
+                ucSVideo.StopPlay();
+                /*\ 关闭线程 /*/
+                m_oThread.Abort();
+                for (int i = 0; i < m_lstLoginInfo.Count; i++)
                 {
-                    CHCNetSDK.NET_DVR_Logout(m_lstLoginInfo[i].iHandle);
-                    m_lstLoginInfo.Clear();
+                    if (m_lstLoginInfo[i].iHandle != -1)
+                    {
+                        CHCNetSDK.NET_DVR_Logout_V30(m_lstLoginInfo[i].iHandle);
+                        m_lstLoginInfo.Clear();
+                    }
                 }
+                bool bHikIsSucc = CHCNetSDK.NET_DVR_Cleanup();
+                Int32 iIsSucc = VsClientAPI.VSSP_ClientCleanup();
             }
-            bool bHikIsSucc = CHCNetSDK.NET_DVR_Cleanup();
-            Int32 iIsSucc = VsClientAPI.VSSP_ClientCleanup();
         }
-
         #endregion
     }
 }

@@ -17,6 +17,7 @@ using System.Threading;
 
 namespace ReplayAx.Video
 {
+    public delegate void FuncRetFailed();
     public partial class ucSingleVideo : UserControl
     {
         public string m_strId;      //摄像机播放id
@@ -35,10 +36,12 @@ namespace ReplayAx.Video
         //播放时间
         private string m_sStartTime;//开始播放的时间
         private string m_sEndTime;  //结束播放的时间
-        private string m_sPlayTime; //播放时间
+        private string m_sPlayTime; //定位播放时间
 
         private bool m_bIsConnect;  //视频是否连接 true 连接 false未连接
 
+        /*\ 定义一个事件 /*/
+        public event FuncRetFailed evtCallBackFailed;
 
         #region [公共函数]
         public ucSingleVideo()
@@ -321,6 +324,7 @@ namespace ReplayAx.Video
                 m_bIsConnect = false;
             }
             m_iPlayHandle = -1;
+            m_sPlayTime = "";
         }
         /// <summary>
         /// 海康录像回放的播放控制
@@ -452,6 +456,7 @@ namespace ReplayAx.Video
         /// <param name="_iPlan">播放进度</param>
         public void SetPlayPlanHik(string _sPlayTime)
         {
+            m_sPlayTime = _sPlayTime;
             CHCNetSDK.NET_DVR_TIME _oPlanTime = GetTimeObjectHik(_sPlayTime);
             IntPtr pIn = Marshal.AllocHGlobal(Marshal.SizeOf(_oPlanTime));
             Marshal.StructureToPtr(_oPlanTime, pIn, true);
@@ -497,8 +502,10 @@ namespace ReplayAx.Video
                         m_fmFullScreen.Visible = true;
                         m_fmFullScreen.StartPlayHik(m_iLoginHandle, m_sStartTime, m_sEndTime,
                             m_iChannel, m_iCamType);
-                        Thread.Sleep(800);
-                        m_fmFullScreen.SetPlayPlanHik(GetReplayOSDTime());
+                        //string sPlayTime = Convert.ToString(Convert.ToUInt64(m_sStartTime) + (Convert.ToUInt64(GetCurrentPlayTime())));
+                        //CHCNetSDK.NET_DVR_TIME oPlayTime = GetTimeObjectHik(sPlayTime);
+                        //Thread.Sleep(1000);
+                        //m_fmFullScreen.SetPlayPlanHik(oPlayTime);
                         break;
                 }
             }

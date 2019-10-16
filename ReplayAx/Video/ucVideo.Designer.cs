@@ -33,9 +33,10 @@
             // 
             // ucSVideo
             // 
-            this.ucSVideo.Location = new System.Drawing.Point(2, 0);
+            this.ucSVideo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ucSVideo.Location = new System.Drawing.Point(0, 0);
             this.ucSVideo.Name = "ucSVideo";
-            this.ucSVideo.Size = new System.Drawing.Size(602, 404);
+            this.ucSVideo.Size = new System.Drawing.Size(800, 500);
             this.ucSVideo.TabIndex = 0;
             // 
             // ucVideo
@@ -44,7 +45,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.ucSVideo);
             this.Name = "ucVideo";
-            this.Size = new System.Drawing.Size(603, 405);
+            this.Size = new System.Drawing.Size(800, 500);
             this.ResumeLayout(false);
 
         }

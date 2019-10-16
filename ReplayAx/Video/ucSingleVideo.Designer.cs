@@ -35,10 +35,9 @@
             // 
             this.ucSinglePanle.BackgroundImage = global::ReplayAx.Properties.Resources.img1;
             this.ucSinglePanle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ucSinglePanle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ucSinglePanle.Location = new System.Drawing.Point(0, 0);
             this.ucSinglePanle.Name = "ucSinglePanle";
-            this.ucSinglePanle.Size = new System.Drawing.Size(661, 441);
+            this.ucSinglePanle.Size = new System.Drawing.Size(800, 500);
             this.ucSinglePanle.TabIndex = 0;
             this.ucSinglePanle.DoubleClick += new System.EventHandler(this.ucSinglePanle_DoubleClick);
             // 
@@ -48,7 +47,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.ucSinglePanle);
             this.Name = "ucSingleVideo";
-            this.Size = new System.Drawing.Size(661, 441);
+            this.Size = new System.Drawing.Size(800, 500);
             this.ResumeLayout(false);
 
         }

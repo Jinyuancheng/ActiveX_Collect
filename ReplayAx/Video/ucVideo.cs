@@ -178,6 +178,9 @@ namespace ReplayAx.Video
             m_sCapPath = "";
             m_bIsFirstFloder = false;
             m_lstSaveHikChannelInfo = new List<CSaveHikChannelInfo>();
+
+            /*\ 初始化子类事件 /*/
+            ucSVideo.evtCallBackFailed += new FuncRetFailed(CallBackFailed);
         }
 
         #region [回调函数] 回调函数
@@ -361,6 +364,17 @@ namespace ReplayAx.Video
 
         #region [对外接口] ActiveX对外接口
         /// <summary>
+        /// 给客户端返回失败
+        /// </summary>
+        public void CallBackFailed()
+        {
+            if (OnRecvTempMsg != null)
+            {
+                string sRetData = "{\"IsSucc\":\"Failed\"}";
+                OnRecvTempMsg(sRetData);
+            }
+        }
+        /// <summary>
         /// 添加主机信息(用于海康登录)
         /// </summary>
         /// <param name="_sIp">登录ip地址</param>
@@ -462,7 +476,7 @@ namespace ReplayAx.Video
             m_sEndTime = _endTime;
             m_sPalyTime = _playTime;
             m_sUrl = _pchUrl;
-            m_iChannel = RetChannelWithIpHik(_pchUrl,_sStreamIp);
+            m_iChannel = RetChannelWithIpHik(_pchUrl, _sStreamIp);
             m_iCamType = Convert.ToInt32(_sType);
             //调用api的类型
             switch (m_iCamType)
@@ -763,7 +777,8 @@ namespace ReplayAx.Video
             }
             else
             {
-                MessageBox.Show("播放时间不正确", "提示");
+                /*\ 返回失败 /*/
+                CallBackFailed();
             }
         }
 

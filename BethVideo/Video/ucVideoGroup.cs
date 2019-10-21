@@ -235,7 +235,37 @@ namespace BethVideo
             {
                 setActiveWin(iWinNo);
             }
+            else
+            {
+                this.m_cmsBethVideoMenu.Show(MousePosition.X, MousePosition.Y);
+            }
         }
         #endregion
+        /// <summary>
+        /// 关闭视频按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void m_cmsCloseVideo_Click(object sender, EventArgs e)
+        {
+            if (m_arrVideos[m_iActiveWin].GetIsConnect())
+            {
+                m_arrVideos[m_iActiveWin].DisConnectVideo();
+                m_arrVideos[m_iActiveWin].ShowVideoCaption(false);
+            }
+            else
+            {
+                setActiveWin(m_iActiveWin);
+            }
+        }
+        /// <summary>
+        /// 关闭所有视频按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void m_cmsCloseAllVideo_Click(object sender, EventArgs e)
+        {
+            DisAllConnectVideo();
+        }
     }
 }

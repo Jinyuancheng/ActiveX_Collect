@@ -545,6 +545,7 @@ namespace BethVideo
         }
         #endregion
 
+        #region [消息处理函数]
         /// <summary>
         /// 消息处理函数
         /// </summary>
@@ -755,6 +756,7 @@ namespace BethVideo
             }
             #endregion
         }
+        #endregion
 
         #region 对外接口事件
         /// <summary>

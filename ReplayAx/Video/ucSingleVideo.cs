@@ -383,8 +383,15 @@ namespace ReplayAx.Video
             FuncCommon.CreateMultiDir(sHikCapPath);
             if (m_iPlayHandle != -1)
             {
-                CHCNetSDK.NET_DVR_PlayBackCaptureFile(m_iLoginHandle, sHikCapPath + DateTime.Now.ToString("yyyyMMddHHmmss") + ".jpeg");
-                MessageBox.Show("图片已保存", "提示");
+                if (CHCNetSDK.NET_DVR_PlayBackCaptureFile(m_iLoginHandle, sHikCapPath + DateTime.Now.ToString("yyyyMMddHHmmss") + ".jpeg"))
+                {
+                    MessageBox.Show("图片已保存", "提示");
+                }
+                else
+                {
+                    uint ierror = CHCNetSDK.NET_DVR_GetLastError();
+                    MessageBox.Show("图片保存失败", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
         /// <summary>
@@ -414,7 +421,7 @@ namespace ReplayAx.Video
             //开始录像文件查找 Start to search video files 
             m_lFindHandle = CHCNetSDK.NET_DVR_FindFile_V40(m_iLoginHandle, ref struFileCond_V40);
             /*\ 失败 /*/
-            if(m_lFindHandle < 0)
+            if (m_lFindHandle < 0)
             {
                 return sRetStr;
             }

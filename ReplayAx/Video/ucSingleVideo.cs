@@ -249,7 +249,7 @@ namespace ReplayAx.Video
             if (m_lHandle != -1)
             {
                 CaptureBmp(sSelfCapPath + DateTime.Now.ToString("yyyyMMddHHmmss") + ".bmp");
-                MessageBox.Show("图片以保存", "提示");
+                MessageBox.Show("图片已保存", "提示");
             }
         }
         //设置是否显示窗口
@@ -384,7 +384,7 @@ namespace ReplayAx.Video
             if (m_iPlayHandle != -1)
             {
                 CHCNetSDK.NET_DVR_PlayBackCaptureFile(m_iLoginHandle, sHikCapPath + DateTime.Now.ToString("yyyyMMddHHmmss") + ".jpeg");
-                MessageBox.Show("图片以保存", "提示");
+                MessageBox.Show("图片已保存", "提示");
             }
         }
         /// <summary>
@@ -505,7 +505,7 @@ namespace ReplayAx.Video
                             m_iChannel, m_iCamType);
                         string sPlayTime = Convert.ToString(Convert.ToUInt64(m_sStartTime) + (Convert.ToUInt64(GetCurrentPlayTime()) + 8));
                         CHCNetSDK.NET_DVR_TIME oPlayTime = GetTimeObjectHik(sPlayTime);
-                        Thread.Sleep(1000);
+                        Thread.Sleep(800);
                         m_fmFullScreen.SetPlayPlanHik(oPlayTime);
                         break;
                 }

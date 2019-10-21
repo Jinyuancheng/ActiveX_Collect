@@ -177,7 +177,7 @@ namespace BethVideo
                     {
                         case 0://热成像摄像机
                             m_lLoginHandle = iHandle;
-                            if(!m_arrVideos[0].GetIsConnect())
+                            if(!m_arrVideos[0].GetIsConnect() && !m_arrVideos[1].GetIsConnect())
                             {
                                 m_arrVideos[0].ConnectVideo(m_lLoginHandle, iChannel);
                                 m_arrVideos[0].ShowVideoCaption(true);
@@ -189,7 +189,7 @@ namespace BethVideo
                             }
                             break;
                         default:
-                            if(!m_arrVideos[0].GetIsConnect())
+                            if(!m_arrVideos[0].GetIsConnect() && !m_arrVideos[1].GetIsConnect())
                             {
                                 m_lLoginHandle = iHandle;
                                 m_arrVideos[0].ConnectVideo(m_lLoginHandle, iChannel);

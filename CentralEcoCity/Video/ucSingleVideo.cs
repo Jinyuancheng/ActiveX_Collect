@@ -318,7 +318,7 @@ namespace CentralEcoCity.Video
                 switch (m_iType)
                 {
                     case 1: //自己api
-                        string CapPathPath = m_CapPath + "\\" + m_strName + "\\";
+                        string CapPathPath = m_CapPath + "\\" + DateTime.Now.ToString("yyyyMMdd") + "\\" + m_strName + "\\";
                         CreateDir(CapPathPath);
                         string CapPathSelf = CapPathPath + DateTime.Now.ToString("yyyyMMddHHmmss") + ".bmp";
                         if (CaptureBmp(CapPathSelf) >= 0)
@@ -334,7 +334,7 @@ namespace CentralEcoCity.Video
                         CHCNetSDK.NET_DVR_JPEGPARA JpegInfo = new CHCNetSDK.NET_DVR_JPEGPARA();
                         JpegInfo.wPicSize = 3; //3-UXGA(1600*1200)， 
                         JpegInfo.wPicQuality = 2;//0-最好，1-较好，2-一般 
-                        string CapPathHikPath = m_CapPath + "\\" + m_strName + "\\";
+                        string CapPathHikPath = m_CapPath + "\\" + DateTime.Now.ToString("yyyyMMdd") + "\\" + m_strName + "\\";
                         CreateDir(CapPathHikPath);
                         string CapPathHik = CapPathHikPath + DateTime.Now.ToString("yyyyMMddHHmmss") + ".jpeg";
                         if (CHCNetSDK.NET_DVR_CapturePicture(m_lHandle, CapPathHik))
@@ -369,7 +369,7 @@ namespace CentralEcoCity.Video
                                 MessageBox.Show("配置抓拍文件存储路径成功", "提示");
                             }
                         }
-                        string CapPathPath = m_CapPath + "\\" + m_strName + "\\";
+                        string CapPathPath = m_CapPath + "\\" + DateTime.Now.ToString("yyyyMMdd") + "\\" + m_strName + "\\";
                         CreateDir(CapPathPath);
                         string CapPathSelf = CapPathPath + DateTime.Now.ToString("yyyyMMddHHmmss") + ".bmp";
                         if (CaptureBmp(CapPathSelf) >= 0)
@@ -396,7 +396,7 @@ namespace CentralEcoCity.Video
                                 MessageBox.Show("配置抓拍文件存储路径成功", "提示");
                             }
                         }
-                        string CapPathHikPath = m_CapPath + "\\" + m_strName + "\\";
+                        string CapPathHikPath = m_CapPath + "\\" + DateTime.Now.ToString("yyyyMMdd") + "\\" + m_strName + "\\";
                         CreateDir(CapPathHikPath);
                         string CapPathHik = CapPathHikPath + DateTime.Now.ToString("yyyyMMddHHmmss") + ".jpeg";
                         if (CHCNetSDK.NET_DVR_CapturePicture(m_lHandle, CapPathHik))

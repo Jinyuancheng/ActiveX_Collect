@@ -177,20 +177,26 @@ namespace BethVideo
                     {
                         case 0://热成像摄像机
                             m_lLoginHandle = iHandle;
-                            m_arrVideos[0].ConnectVideo(m_lLoginHandle, iChannel);
-                            m_arrVideos[0].ShowVideoCaption(true);
-                            m_arrVideos[0].SetCamType(iType);
-                            m_arrVideos[1].ConnectVideo(m_lLoginHandle, (iChannel + 1));
-                            m_arrVideos[1].ShowVideoCaption(true);
-                            m_arrVideos[1].SetCamType(iType);
-                            setActiveWin(0);
+                            if(!m_arrVideos[0].GetIsConnect())
+                            {
+                                m_arrVideos[0].ConnectVideo(m_lLoginHandle, iChannel);
+                                m_arrVideos[0].ShowVideoCaption(true);
+                                m_arrVideos[0].SetCamType(iType);
+                                m_arrVideos[1].ConnectVideo(m_lLoginHandle, (iChannel + 1));
+                                m_arrVideos[1].ShowVideoCaption(true);
+                                m_arrVideos[1].SetCamType(iType);
+                                setActiveWin(0);
+                            }
                             break;
                         default:
-                            m_lLoginHandle = iHandle;
-                            m_arrVideos[0].ConnectVideo(m_lLoginHandle, iChannel);
-                            m_arrVideos[0].ShowVideoCaption(true);
-                            m_arrVideos[0].SetCamType(iType);
-                            setActiveWin(0);
+                            if(!m_arrVideos[0].GetIsConnect())
+                            {
+                                m_lLoginHandle = iHandle;
+                                m_arrVideos[0].ConnectVideo(m_lLoginHandle, iChannel);
+                                m_arrVideos[0].ShowVideoCaption(true);
+                                m_arrVideos[0].SetCamType(iType);
+                                setActiveWin(0);
+                            }
                             break;
                     }
                     break;

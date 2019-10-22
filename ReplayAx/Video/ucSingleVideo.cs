@@ -383,7 +383,7 @@ namespace ReplayAx.Video
             FuncCommon.CreateMultiDir(sHikCapPath);
             if (m_iPlayHandle != -1)
             {
-                if (CHCNetSDK.NET_DVR_PlayBackCaptureFile(m_iLoginHandle, sHikCapPath + DateTime.Now.ToString("yyyyMMddHHmmss") + ".jpeg"))
+                if (CHCNetSDK.NET_DVR_PlayBackCaptureFile(m_iPlayHandle, sHikCapPath + DateTime.Now.ToString("yyyyMMddHHmmss") + ".jpeg"))
                 {
                     MessageBox.Show("图片已保存", "提示");
                 }
@@ -512,7 +512,7 @@ namespace ReplayAx.Video
                             m_iChannel, m_iCamType);
                         string sPlayTime = Convert.ToString(Convert.ToUInt64(m_sStartTime) + (Convert.ToUInt64(GetCurrentPlayTime()) + 8));
                         CHCNetSDK.NET_DVR_TIME oPlayTime = GetTimeObjectHik(sPlayTime);
-                        Thread.Sleep(800);
+                        Thread.Sleep(1800);
                         m_fmFullScreen.SetPlayPlanHik(oPlayTime);
                         break;
                 }

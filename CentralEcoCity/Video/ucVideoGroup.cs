@@ -320,6 +320,7 @@ namespace CentralEcoCity.Video
                     {
                         if (m_iCurScreens == 1)
                         {
+                            setActiveWin(0);
                             if (m_arrVideos[m_iActiveWin].m_bConnected)
                             {
                                 m_arrVideos[m_iActiveWin].DisConnectVideoHik();
@@ -337,19 +338,19 @@ namespace CentralEcoCity.Video
                     else
                     {
                         /*\ 判断当先显示的视频是否和要在活动窗口显示的视频Ip相等 /*/
-                        if (m_arrVideos[Convert.ToInt32(oHikCamVideo.Tag)].m_strHikCamIp == strIp)
+                        if (m_arrVideos[m_iActiveWin].m_strHikCamIp == strIp)
                         {
-                            setActiveWin(Convert.ToInt32(oHikCamVideo.Tag));
+                            setActiveWin(m_iActiveWin);
                         }
                         else
                         {
                             /*\ 断开当前连接的视频 /*/
-                            m_arrVideos[Convert.ToInt32(oHikCamVideo.Tag)].DisConnectVideo();
+                            m_arrVideos[m_iActiveWin].DisConnectVideo();
                             /*\ 连接新id的视频 /*/
-                            m_arrVideos[Convert.ToInt32(oHikCamVideo.Tag)].ConnectVideoHik(iLoginHandle, iChannel, strName);
-                            m_arrVideos[Convert.ToInt32(oHikCamVideo.Tag)].SetHikCamIp(strIp);
-                            m_arrVideos[Convert.ToInt32(oHikCamVideo.Tag)].SetCamType(iType, iChannel);
-                            m_arrVideos[Convert.ToInt32(oHikCamVideo.Tag)].ShowVideoCaption(true);
+                            m_arrVideos[m_iActiveWin].ConnectVideoHik(iLoginHandle, iChannel, strName);
+                            m_arrVideos[m_iActiveWin].SetHikCamIp(strIp);
+                            m_arrVideos[m_iActiveWin].SetCamType(iType, iChannel);
+                            m_arrVideos[m_iActiveWin].ShowVideoCaption(true);
                         }
                     }
                     break;

@@ -67,7 +67,7 @@
             // 
             // pnlShowVideo
             // 
-            this.pnlShowVideo.BackgroundImage = global::BethVideo.Properties.Resources.双视3;
+            this.pnlShowVideo.BackgroundImage = global::BethVideo.Properties.Resources.双视1691;
             this.pnlShowVideo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pnlShowVideo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlShowVideo.Location = new System.Drawing.Point(0, 18);

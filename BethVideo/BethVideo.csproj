@@ -57,6 +57,11 @@
     <Compile Include="Common\DefIcomClient.cs" />
     <Compile Include="HikSDK\CHCNetSDK.cs" />
     <Compile Include="HikSDK\CustomCalss.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Video\fmFullScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,11 +72,6 @@
     <Compile Include="API\HikVideoAPI.cs" />
     <Compile Include="Common\IObjectSafety.cs" />
     <Compile Include="Common\MsgHandleStr.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Video\ucSingleVideo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -100,8 +100,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Video\ucSingleVideo.resx">
       <DependentUpon>ucSingleVideo.cs</DependentUpon>
@@ -115,7 +115,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resources\VideoBack.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\VideoClose_0.png" />
@@ -124,16 +123,11 @@
     <None Include="Resources\VideoClose_1.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\双视2.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="Resources\双视169.png" />
     <None Include="Resources\双视大屏1.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\双视.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\双视1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

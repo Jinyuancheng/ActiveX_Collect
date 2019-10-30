@@ -46,7 +46,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::BethVideo.Properties.Resources.VideoBack;
+            //this.BackgroundImage = global::BethVideo.Properties.Resources.VideoBack;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(564, 416);
             this.Controls.Add(this.panelFull);

@@ -63,16 +63,6 @@ namespace BethVideo.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap VideoBack {
-            get {
-                object obj = ResourceManager.GetObject("VideoBack", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
-        /// </summary>
         internal static System.Drawing.Bitmap VideoClose_0 {
             get {
                 object obj = ResourceManager.GetObject("VideoClose_0", resourceCulture);
@@ -113,9 +103,9 @@ namespace BethVideo.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap 双视2 {
+        internal static System.Drawing.Bitmap 双视169 {
             get {
-                object obj = ResourceManager.GetObject("双视2", resourceCulture);
+                object obj = ResourceManager.GetObject("双视169", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,9 +113,9 @@ namespace BethVideo.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap 双视3 {
+        internal static System.Drawing.Bitmap 双视1691 {
             get {
-                object obj = ResourceManager.GetObject("双视3", resourceCulture);
+                object obj = ResourceManager.GetObject("双视1691", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

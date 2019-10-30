@@ -51,19 +51,19 @@
             this.m_cmsCloseVideo,
             this.m_cmsCloseAllVideo});
             this.m_cmsBethVideoMenu.Name = "m_cmsBethVideoMenu";
-            this.m_cmsBethVideoMenu.Size = new System.Drawing.Size(181, 70);
+            this.m_cmsBethVideoMenu.Size = new System.Drawing.Size(149, 48);
             // 
             // m_cmsCloseVideo
             // 
             this.m_cmsCloseVideo.Name = "m_cmsCloseVideo";
-            this.m_cmsCloseVideo.Size = new System.Drawing.Size(180, 22);
+            this.m_cmsCloseVideo.Size = new System.Drawing.Size(148, 22);
             this.m_cmsCloseVideo.Text = "断开视频";
             this.m_cmsCloseVideo.Click += new System.EventHandler(this.m_cmsCloseVideo_Click);
             // 
             // m_cmsCloseAllVideo
             // 
             this.m_cmsCloseAllVideo.Name = "m_cmsCloseAllVideo";
-            this.m_cmsCloseAllVideo.Size = new System.Drawing.Size(180, 22);
+            this.m_cmsCloseAllVideo.Size = new System.Drawing.Size(148, 22);
             this.m_cmsCloseAllVideo.Text = "断开全部视频";
             this.m_cmsCloseAllVideo.Click += new System.EventHandler(this.m_cmsCloseAllVideo_Click);
             // 
@@ -74,7 +74,7 @@
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.Controls.Add(this.pnlShape);
             this.Name = "ucVideoGroup";
-            this.Size = new System.Drawing.Size(445, 225);
+            this.Size = new System.Drawing.Size(576, 182);
             this.m_cmsBethVideoMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 

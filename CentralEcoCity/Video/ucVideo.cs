@@ -346,10 +346,19 @@ namespace CentralEcoCity.Video
                         {
                             for (int z = 0; z < m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struIPDevInfo.Length; z++)
                             {
-                                if (_sIp == m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struIPDevInfo[z].struIP.sIpV4)
+                                uint dwSize = (uint)Marshal.SizeOf(m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struStreamMode[z].uGetStream);
+                                IntPtr ptrChanInfo = Marshal.AllocHGlobal((Int32)dwSize);
+                                Marshal.StructureToPtr(m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struStreamMode[z].uGetStream, ptrChanInfo, false);
+
+                                CHCNetSDK.NET_DVR_IPCHANINFO m_struChanInfo = (CHCNetSDK.NET_DVR_IPCHANINFO)Marshal.PtrToStructure(ptrChanInfo, typeof(CHCNetSDK.NET_DVR_IPCHANINFO));
+                                int iDevId = Convert.ToInt32(m_struChanInfo.byIPID) + Convert.ToInt32(m_struChanInfo.byIPIDHigh) * 256;
+                                if (iDevId > 0)
                                 {
-                                    iChannel = z + 1;
-                                    return iChannel;
+                                    if (_sIp == m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struIPDevInfo[iDevId - 1].struIP.sIpV4)
+                                    {
+                                        iChannel = z + 1;
+                                        return iChannel;
+                                    }
                                 }
                             }
                         }

@@ -492,10 +492,10 @@ namespace BethVideo
                                             {
                                                 oIpParaCfgV40 = (CHCNetSDK.NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ptrIpParaCfgV40, typeof(CHCNetSDK.NET_DVR_IPPARACFG_V40));
                                                 oSaveHikChannelInfo.m_lstHikChannelInfo.Add(oIpParaCfgV40);
-                                                m_lstSaveHikChannelInfo.Add(oSaveHikChannelInfo);
                                             }
                                         }
                                     }
+                                    m_lstSaveHikChannelInfo.Add(oSaveHikChannelInfo);
                                     Marshal.FreeHGlobal(ptrIpParaCfgV40);
                                 }
                             }
@@ -513,6 +513,42 @@ namespace BethVideo
                 }
             }
         }
+        ///// <summary>
+        ///// 根据ip计算通道号
+        ///// </summary>
+        ///// <param name="_sIp">摄像机ip</param>
+        ///// <param name="sStreamIp">流媒体服务器ip</param>
+        //private int ComputeChannel(string _sIp, string sStreamIp)
+        //{
+        //    int iChannel = -1;
+        //    if (m_lstSaveHikChannelInfo.Count > 0)
+        //    {
+        //        for (int i = 0; i < m_lstSaveHikChannelInfo.Count; i++)
+        //        {
+        //            if (m_lstSaveHikChannelInfo[i].m_sStreamIp == sStreamIp)
+        //            {
+        //                for (int j = 0; j < m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo.Count; j++)
+        //                {
+        //                    for (int z = 0; z < m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struIPDevInfo.Length; z++)
+        //                    {
+        //                        MessageBox.Show("ChannelIp : " + m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struIPDevInfo[z].struIP.sIpV4);
+        //                        if (_sIp == m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struIPDevInfo[z].struIP.sIpV4)
+        //                        {
+        //                            iChannel = z + 1;
+        //                            MessageBox.Show("sIp ： " + _sIp + "通道号 : " + iChannel + " sIpV4 : " +
+        //                                m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struIPDevInfo[z].struIP.sIpV4 + " z : " + z + 
+        //                                "StreamIp :" + sStreamIp + "起始通道 : " + m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].dwStartDChan +
+        //                                "数字通道个数（只读）:" + m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].dwDChanNum +
+        //                                "最大模拟通道个数（只读） : " + m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].dwAChanNum);
+        //                            return iChannel;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return iChannel;
+        //}
         /// <summary>
         /// 根据ip计算通道号
         /// </summary>
@@ -531,10 +567,19 @@ namespace BethVideo
                         {
                             for (int z = 0; z < m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struIPDevInfo.Length; z++)
                             {
-                                if (_sIp == m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struIPDevInfo[z].struIP.sIpV4)
+                                uint dwSize = (uint)Marshal.SizeOf(m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struStreamMode[z].uGetStream);
+                                IntPtr ptrChanInfo = Marshal.AllocHGlobal((Int32)dwSize);
+                                Marshal.StructureToPtr(m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struStreamMode[z].uGetStream, ptrChanInfo, false);
+
+                                CHCNetSDK.NET_DVR_IPCHANINFO m_struChanInfo = (CHCNetSDK.NET_DVR_IPCHANINFO)Marshal.PtrToStructure(ptrChanInfo, typeof(CHCNetSDK.NET_DVR_IPCHANINFO));
+                                int iDevId = Convert.ToInt32(m_struChanInfo.byIPID) + Convert.ToInt32(m_struChanInfo.byIPIDHigh) * 256;
+                                if (iDevId > 0)
                                 {
-                                    iChannel = z + 1;
-                                    return iChannel;
+                                    if(_sIp == m_lstSaveHikChannelInfo[i].m_lstHikChannelInfo[j].struIPDevInfo[iDevId - 1].struIP.sIpV4)
+                                    {
+                                        iChannel = z + 1;
+                                        return iChannel;
+                                    }
                                 }
                             }
                         }

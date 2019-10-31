@@ -31,8 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucSingleVideo));
             this.pnlCaption = new System.Windows.Forms.Panel();
             this.lblCamName = new System.Windows.Forms.Label();
-            this.pnlShowVideo = new System.Windows.Forms.Panel();
             this.pbClose = new System.Windows.Forms.PictureBox();
+            this.pnlShowVideo = new System.Windows.Forms.Panel();
             this.pnlCaption.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbClose)).BeginInit();
             this.SuspendLayout();
@@ -65,16 +65,6 @@
             this.lblCamName.Text = "摄像机";
             this.lblCamName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // pnlShowVideo
-            // 
-            this.pnlShowVideo.BackgroundImage = global::BethVideo.Properties.Resources.双视1691;
-            this.pnlShowVideo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pnlShowVideo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlShowVideo.Location = new System.Drawing.Point(0, 18);
-            this.pnlShowVideo.Name = "pnlShowVideo";
-            this.pnlShowVideo.Size = new System.Drawing.Size(349, 286);
-            this.pnlShowVideo.TabIndex = 3;
-            // 
             // pbClose
             // 
             this.pbClose.BackColor = System.Drawing.Color.Transparent;
@@ -92,6 +82,16 @@
             this.pbClose.Click += new System.EventHandler(this.pbClose_Click);
             this.pbClose.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbClose_MouseDown);
             this.pbClose.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pbClose_MouseUp);
+            // 
+            // pnlShowVideo
+            // 
+            this.pnlShowVideo.BackgroundImage = global::BethVideo.Properties.Resources.双视1691;
+            this.pnlShowVideo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pnlShowVideo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlShowVideo.Location = new System.Drawing.Point(0, 18);
+            this.pnlShowVideo.Name = "pnlShowVideo";
+            this.pnlShowVideo.Size = new System.Drawing.Size(349, 286);
+            this.pnlShowVideo.TabIndex = 3;
             // 
             // ucSingleVideo
             // 

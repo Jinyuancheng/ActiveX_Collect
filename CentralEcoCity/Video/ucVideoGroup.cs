@@ -232,7 +232,24 @@ namespace CentralEcoCity.Video
             }
             return oVideo;
         }
-
+        /// <summary>
+        /// 根据摄像机ip得到该摄像机的活动窗口
+        /// </summary>
+        /// <param name="_strCamIp">摄像机ip</param>
+        /// <returns></returns>
+        public int GetWinNoByHikCamIp(string _strCamIp)
+        {
+            int iRet = -1;
+            for (int i = 0; i < m_iMaxScreen; i++)
+            {
+                if (m_arrVideos[i].m_strHikCamIp == _strCamIp)
+                {
+                    iRet = i;
+                    break;
+                }
+            }
+            return iRet;
+        }
         /// <summary>
         /// 根据摄像机ID查找窗口
         /// </summary>
@@ -338,9 +355,10 @@ namespace CentralEcoCity.Video
                     else
                     {
                         /*\ 判断当先显示的视频是否和要在活动窗口显示的视频Ip相等 /*/
-                        if (m_arrVideos[m_iActiveWin].m_strHikCamIp == strIp)
+                        int iWinNo = GetWinNoByHikCamIp(strIp);
+                        if (iWinNo != -1)
                         {
-                            setActiveWin(m_iActiveWin);
+                            setActiveWin(iWinNo);
                         }
                         else
                         {
@@ -352,6 +370,20 @@ namespace CentralEcoCity.Video
                             m_arrVideos[m_iActiveWin].SetCamType(iType, iChannel);
                             m_arrVideos[m_iActiveWin].ShowVideoCaption(true);
                         }
+                        //if (m_arrVideos[m_iActiveWin].m_strHikCamIp == strIp)
+                        //{
+                        //    setActiveWin(m_iActiveWin);
+                        //}
+                        //else
+                        //{
+                        //    /*\ 断开当前连接的视频 /*/
+                        //    m_arrVideos[m_iActiveWin].DisConnectVideo();
+                        //    /*\ 连接新id的视频 /*/
+                        //    m_arrVideos[m_iActiveWin].ConnectVideoHik(iLoginHandle, iChannel, strName);
+                        //    m_arrVideos[m_iActiveWin].SetHikCamIp(strIp);
+                        //    m_arrVideos[m_iActiveWin].SetCamType(iType, iChannel);
+                        //    m_arrVideos[m_iActiveWin].ShowVideoCaption(true);
+                        //}
                     }
                     break;
             }

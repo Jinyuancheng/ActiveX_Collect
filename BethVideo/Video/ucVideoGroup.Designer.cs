@@ -74,7 +74,7 @@
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.Controls.Add(this.pnlShape);
             this.Name = "ucVideoGroup";
-            this.Size = new System.Drawing.Size(576, 182);
+            this.Size = new System.Drawing.Size(384, 121);
             this.m_cmsBethVideoMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 

@@ -319,7 +319,8 @@ namespace CentralEcoCity.Video
                             if (m_lstLoginInfo[i].iHandle != -1 &&
                                 m_lstLoginInfo[i].sIp == EpollArray[j]["sStreamIp"].ToString())
                             {
-                                ucVGSHow.ConnectVideo(EpollArray[j]["lId"].ToString(), EpollArray[j]["sIp"].ToString(),
+                                ucVGSHow.setActiveWin(0);
+                                ucVGSHow.ConnectVideoSwitch(EpollArray[j]["lId"].ToString(), EpollArray[j]["sIp"].ToString(),
                                     EpollArray[j]["sCamName"].ToString(), iType, iChannel, m_lstLoginInfo[i].iHandle);
                                 break;
                             }
@@ -502,6 +503,7 @@ namespace CentralEcoCity.Video
         public void SwitchConnect(string CamInfo)
         {
             ucVGSHow.DisConnectVideoAll();
+            Thread.Sleep(500);
             //休眠两秒
             //System.Threading.Thread.Sleep(5000);
             ucVGSHow.setActiveWin(0);
@@ -527,7 +529,8 @@ namespace CentralEcoCity.Video
                                 if (m_lstLoginInfo[i].iHandle != -1 &&
                                     m_lstLoginInfo[i].sIp == EpollArray[0]["sStreamIp"].ToString())
                                 {
-                                    ucVGSHow.ConnectVideo(EpollArray[0]["lId"].ToString(), EpollArray[0]["sIp"].ToString(),
+                                    ucVGSHow.setActiveWin(0);
+                                    ucVGSHow.ConnectVideoSwitch(EpollArray[0]["lId"].ToString(), EpollArray[0]["sIp"].ToString(),
                                         EpollArray[0]["sCamName"].ToString(), iType, iChannel, m_lstLoginInfo[0].iHandle);
                                 }
                             }

@@ -160,6 +160,47 @@ namespace CentralEcoCity.Video
         /// <summary>
         /// 获取下一个空白窗口
         /// </summary>
+        private ucSingleVideo GetNextNullWinSwitch()
+        {
+            int iNullNo = 0;
+            if (m_iActiveWin == -1)
+            {
+                iNullNo = 0;
+            }
+            else
+            {
+                iNullNo = m_iActiveWin;
+                if (iNullNo == m_iCurScreens)
+                {
+                    iNullNo = 0;
+                }
+            }
+            for (int i = iNullNo; i < m_iCurScreens; i++)
+            {
+                if (m_arrVideos[i].GetLinkHandle() == -1 && !m_arrVideos[i].GetConn())
+                {
+                    m_arrVideos[i].SetConn(true);
+                    iNullNo = i;
+                    break;
+                }
+                else
+                {
+                    if (m_iActiveWin + 1 <= m_iCurScreens)
+                    {
+                        iNullNo = m_iActiveWin + 1;
+                    }
+                    else
+                    {
+                        iNullNo = 0;
+                    }
+                }
+            }
+            setActiveWin(iNullNo);
+            return m_arrVideos[iNullNo];
+        }
+        /// <summary>
+        /// 获取下一个空白窗口
+        /// </summary>
         private ucSingleVideo GetNextNullWin()
         {
             int iNullNo = 0;
@@ -177,7 +218,7 @@ namespace CentralEcoCity.Video
             }
             for (int i = iNullNo; i < m_iCurScreens; i++)
             {
-                if (m_arrVideos[i].GetLinkHandle() == -1)
+                if (m_arrVideos[i].GetLinkHandle() == -1 && !m_arrVideos[i].GetConn())
                 {
                     iNullNo = i;
                     break;
@@ -389,6 +430,110 @@ namespace CentralEcoCity.Video
             }
         }
         /// <summary>
+        /// 连接视频
+        /// </summary>
+        /// <param name="strId">连接视频的id</param>
+        /// <param name="strIp">连接视频的ip</param>
+        /// <param name="strName">摄像机名称</param>
+        /// <param name="itype">api类型 1.自己api 2.海康api</param>
+        /// <param name="iLoginHandle">海康摄像机的登录句柄</param>
+        /// <param name="iChannel">播放通道（海康摄像机）</param>
+        public void ConnectVideoSwitch(string strId, string strIp, string strName, int iType,
+            int iChannel, int iLoginHandle = -1)
+        {
+            ucSingleVideo oSelfCamVideo = GetSingleFormByCamId(strId);
+            /*\ 根据海康 /*/
+            ucSingleVideo oHikCamVideo = GetSingleByHikCamIp(strIp);
+
+            switch (iType)
+            {
+                case 1://自己api
+                    if (oSelfCamVideo == null)
+                    {
+                        ucSingleVideo oVideo = GetNextNullWin();
+                        if (oVideo != null)
+                        {
+                            oVideo.ConnectVideo(strId, strIp, strName);
+                            oVideo.SetCamType(iType, iChannel);
+                            oVideo.ShowVideoCaption(true);
+                        }
+                    }
+                    else
+                    {
+                        /*\ 判断当先显示的视频是否和要在活动窗口显示的视频id相等 /*/
+                        if (m_arrVideos[Convert.ToInt32(oSelfCamVideo.Tag)].m_strCamId == strId)
+                        {
+                            setActiveWin(Convert.ToInt32(oSelfCamVideo.Tag));
+                        }
+                        else
+                        {
+                            /*\ 断开当前连接的视频 /*/
+                            m_arrVideos[Convert.ToInt32(oSelfCamVideo.Tag)].DisConnectVideo();
+                            /*\ 连接新id的视频 /*/
+                            m_arrVideos[Convert.ToInt32(oSelfCamVideo.Tag)].ConnectVideo(strId, strIp, strName);
+                            m_arrVideos[Convert.ToInt32(oSelfCamVideo.Tag)].SetCamType(iType, iChannel);
+                            m_arrVideos[Convert.ToInt32(oSelfCamVideo.Tag)].ShowVideoCaption(true);
+                        }
+                    }
+                    break;
+                case 2://海康api
+                       /*\ 判断当前选中窗口是否连接视频,连接视频断开，替换 /*/
+                    if (oHikCamVideo == null)
+                    {
+                        if (m_iCurScreens == 1)
+                        {
+                            setActiveWin(0);
+                            if (m_arrVideos[m_iActiveWin].m_bConnected)
+                            {
+                                m_arrVideos[m_iActiveWin].DisConnectVideoHik();
+                            }
+                        }
+                        ucSingleVideo oVideo = GetNextNullWinSwitch();
+                        if (oVideo != null)
+                        {
+                            oVideo.ConnectVideoHik(iLoginHandle, iChannel, strName);
+                            oVideo.SetHikCamIp(strIp);
+                            oVideo.SetCamType(iType, iChannel);
+                            oVideo.ShowVideoCaption(true);
+                        }
+                    }
+                    else
+                    {
+                        /*\ 判断当先显示的视频是否和要在活动窗口显示的视频Ip相等 /*/
+                        int iWinNo = GetWinNoByHikCamIp(strIp);
+                        if (iWinNo != -1)
+                        {
+                            setActiveWin(iWinNo);
+                        }
+                        else
+                        {
+                            /*\ 断开当前连接的视频 /*/
+                            m_arrVideos[m_iActiveWin].DisConnectVideo();
+                            /*\ 连接新id的视频 /*/
+                            m_arrVideos[m_iActiveWin].ConnectVideoHik(iLoginHandle, iChannel, strName);
+                            m_arrVideos[m_iActiveWin].SetHikCamIp(strIp);
+                            m_arrVideos[m_iActiveWin].SetCamType(iType, iChannel);
+                            m_arrVideos[m_iActiveWin].ShowVideoCaption(true);
+                        }
+                        //if (m_arrVideos[m_iActiveWin].m_strHikCamIp == strIp)
+                        //{
+                        //    setActiveWin(m_iActiveWin);
+                        //}
+                        //else
+                        //{
+                        //    /*\ 断开当前连接的视频 /*/
+                        //    m_arrVideos[m_iActiveWin].DisConnectVideo();
+                        //    /*\ 连接新id的视频 /*/
+                        //    m_arrVideos[m_iActiveWin].ConnectVideoHik(iLoginHandle, iChannel, strName);
+                        //    m_arrVideos[m_iActiveWin].SetHikCamIp(strIp);
+                        //    m_arrVideos[m_iActiveWin].SetCamType(iType, iChannel);
+                        //    m_arrVideos[m_iActiveWin].ShowVideoCaption(true);
+                        //}
+                    }
+                    break;
+            }
+        }
+        /// <summary>
         /// 断开所有的连接视频
         /// </summary>
         public void DisConnectVideoAll()
@@ -409,6 +554,7 @@ namespace CentralEcoCity.Video
                 {
                     m_arrVideos[i].DisConnectVideoHik();
                     m_arrVideos[i].ShowVideoCaption(false);
+                    m_arrVideos[i].SetConn(false);
                 }
 
             }
@@ -434,6 +580,7 @@ namespace CentralEcoCity.Video
                 {
                     m_arrVideos[m_iActiveWin].DisConnectVideoHik();
                     m_arrVideos[m_iActiveWin].ShowVideoCaption(false);
+                    m_arrVideos[m_iActiveWin].SetConn(false);
                 }
 
             }

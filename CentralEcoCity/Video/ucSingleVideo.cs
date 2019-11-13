@@ -38,7 +38,8 @@ namespace CentralEcoCity.Video
         public bool m_bIsFirstFloder;              //是否是第一次选择文件夹
         public event pSetCapPath m_evntSetCapPath; //用来设置所有摄像机的抓拍路径
         public string m_strHikCamIp;               //海康摄像机ip 
-
+        public bool m_bConn;
+        
         #region 初始化 成员变量等
         /// <summary>
         /// 初始化
@@ -56,6 +57,7 @@ namespace CentralEcoCity.Video
             m_bIsFirstFloder = false;
             m_HikLoginHandle = -1;
             m_strHikCamIp = "";
+            m_bConn = false;
         }
         #endregion
 
@@ -67,6 +69,14 @@ namespace CentralEcoCity.Video
         public void SetHikCamIp(string _strCamIp)
         {
             m_strHikCamIp = _strCamIp;
+        }
+        public void SetConn(bool _bConn)
+        {
+            m_bConn = _bConn;
+        }
+        public bool GetConn()
+        {
+            return m_bConn;
         }
         #endregion
 
@@ -501,6 +511,7 @@ namespace CentralEcoCity.Video
                 m_bIsFirstFloder = false;
                 m_HikLoginHandle = -1;
                 m_strHikCamIp = "";
+                m_bConn = false;
             }
         }
         #endregion

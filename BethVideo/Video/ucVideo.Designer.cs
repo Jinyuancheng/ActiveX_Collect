@@ -44,7 +44,7 @@
             this.ucVideoMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ucVideoMain.Location = new System.Drawing.Point(0, 0);
             this.ucVideoMain.Name = "ucVideoMain";
-            this.ucVideoMain.Size = new System.Drawing.Size(576, 182);
+            this.ucVideoMain.Size = new System.Drawing.Size(384, 121);
             this.ucVideoMain.TabIndex = 0;
             // 
             // ucVideo
@@ -54,7 +54,7 @@
             this.Controls.Add(this.ucVideoMain);
             this.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.Name = "ucVideo";
-            this.Size = new System.Drawing.Size(576, 182);
+            this.Size = new System.Drawing.Size(384, 121);
             this.ResumeLayout(false);
 
         }

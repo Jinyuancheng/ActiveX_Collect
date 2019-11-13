@@ -218,7 +218,7 @@ namespace CentralEcoCity.Video
             }
             for (int i = iNullNo; i < m_iCurScreens; i++)
             {
-                if (m_arrVideos[i].GetLinkHandle() == -1 && !m_arrVideos[i].GetConn())
+                if (m_arrVideos[i].GetLinkHandle() == -1)
                 {
                     iNullNo = i;
                     break;
